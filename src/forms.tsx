@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Button, Flex, FlexProps, Input, Checkbox, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
 import { report } from 'process';
-import Clipboard from './clipboard';
 
-type FieldType = {
+
+type ReportType = {
     tramNumber: string,
     redIcons?: boolean,
     whiteIcons?: boolean,
@@ -30,11 +30,16 @@ type FieldType = {
     issueNavGps?: boolean,
   };
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  type ReportSection ={
+    id: string,
+    content: boolean,
+  }
+
+  const onFinish: FormProps<ReportType>['onFinish'] = (values) => {
     console.log('Success:', values);
   };
   
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
@@ -42,7 +47,19 @@ type FieldType = {
 
 
 const Forms: React.FC = () => {
+
+    const [ report, setReport ] = useState<ReportType>()
     
+    const handleClick = (section: string) => {
+        console.log('section', section)
+        console.log('report', report)
+        // setReport( {...report, report[section]: !report[section]  })
+
+        // setReport((prevSections) => {
+        //     // const isAlreadySelected = prevSections.some(s => s.id === section.id)
+        //     console.log(prevSections)
+        // })
+    }
 
     const initialValues = {
         tramNumber: '',
@@ -147,138 +164,142 @@ const Forms: React.FC = () => {
     //   };
 
     return (
-        <Form style={containerStyle}
-            name="basic"
-            // initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-        >
-            <ConfigProvider
-                theme={{
-                token: {
-                    // Seed Token
-                    colorPrimary: 'orange',
-                },
-                }}
+        <>
+            
+            
+            <Form style={containerStyle}
+                name="basic"
+                // initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
             >
-                <div style={{marginTop: '10px'}}>
-                    <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}/>
-                </div>
+                <ConfigProvider
+                    theme={{
+                    token: {
+                        // Seed Token
+                        colorPrimary: 'orange',
+                    },
+                    }}
+                >
+                    <div style={{marginTop: '10px'}}>
+                        <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}/>
+                    </div>
 
-                <div style={{marginTop: '20px'}}>
-                    <h1>Driver Report</h1>
-                </div>
+                    <div style={{marginTop: '20px'}}>
+                        <h1>Driver Report</h1>
+                    </div>
 
-                <div style={{marginTop: '10px'}}>
-                    <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                        <Form.Item<FieldType> name="redIcons" >
-                            <CheckBtn label='Red Icons' textColor='red' onClick={() => setRedIcons(!redIcons)}/>
-                        </Form.Item>
-                        <Form.Item<FieldType>  name="whiteIcons" >
-                            <CheckBtn label='White Icons' onClick={() => setWhiteIcons(!whiteIcons)}/>
-                        </Form.Item>
-                        <Form.Item<FieldType> name="greenIcons" >
-                            <CheckBtn label='Green Icons' textColor='green' onClick={() => setGreenIcons(!greenIcons)}/>
-                        </Form.Item>
-                        <Form.Item<FieldType> name="driverReport" >
-                            <p>
-                                <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }}/>
-                            </p>
-                        </Form.Item>
+                    <div style={{marginTop: '10px'}}>
+                        <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
+                            <Form.Item<ReportType> name="redIcons" >
+                                <CheckBtn label='Red Icons' textColor='red' onClick={() => setRedIcons(!redIcons)}/>
+                            </Form.Item>
+                            <Form.Item<ReportType>  name="whiteIcons" >
+                                <CheckBtn label='White Icons' onClick={() => handleClick('whiteIcons')}/>
+                            </Form.Item>
+                            <Form.Item<ReportType> name="greenIcons" >
+                                <CheckBtn label='Green Icons' textColor='green' onClick={() => setGreenIcons(!greenIcons)}/>
+                            </Form.Item>
+                            <Form.Item<ReportType> name="driverReport" >
+                                <p>
+                                    <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }}/>
+                                </p>
+                            </Form.Item>
+                        </Flex>
+                    </div>
+
+
+                    <div style={{marginTop: '20px'}}>
+                        <h1>Issues</h1>
+                    </div>
+
+                    <Flex gap="middle" align="start" vertical>
+                        <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
+                            <div style={boxStyle}> 
+                                <h1>Master</h1>
+                                <CheckBtn label='Unavailable' onClick={() => setIssueMasterUnavailable(!issueMasterUnavailable)}/>
+                                <CheckBtn label='Npme' onClick={() => setIssueMasterNpme(!issueMasterNpme)}/>
+                                <CheckBtn label='Redis' onClick={() => setIssueMasterRedis(!issueMasterRedis)}/>
+                                <CheckBtn label='Jet_Hard' onClick={() => setIssueMasterJetHard(!issueMasterJetHard)}/>
+                                <CheckBtn label='Deserializer' onClick={() => setIssueMasterDeserializer(!issueMasterDeserializer)}/>
+                                <CheckBtn label='No Video' onClick={() => setIssueMasterNoVideo(!issueMasterNoVideo)}/>
+                                <CheckBtn label='Camera error' onClick={() => setIssueMasterCamera(!issueMasterCamera)}/>
+                                <CheckBtn label='Can error' onClick={() => setIssueMasterCan(!issueMasterCan)}/>
+                                <CheckBtn label='IMU' onClick={() => setIssueMasterImu(!issueMasterImu)}/>
+                                <CheckBtn label='Geomap' onClick={() => setIssueMasterMap(!issueMasterMap)}/>
+                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                            </div>
+                            <div style={boxStyle}> 
+                                <h1>Slave</h1>
+                                <CheckBtn label='Unavailable' onClick={() => setIssueSlaveUnavailable(!issueSlaveUnavailable)}/>
+                                <CheckBtn label='Jet_Hard' onClick={() => setIssueSlaveJetHard(!issueSlaveJetHard)}/>
+                                <CheckBtn label='Deserializer' onClick={() => setIssueSlaveDeserializer(!issueSlaveDeserializer)}/>
+                                <CheckBtn label='No Video' onClick={() => setIssueSlaveNoVideo(!issueSlaveNoVideo)}/>
+                                <CheckBtn label='Radar' onClick={() => setIssueSlaveRadar(!issueSlaveRadar)}/>
+                                <CheckBtn label='Selects' onClick={() => setIssueSlaveSelects(!issueSlaveSelects)}/>
+                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                            </div>
+                            <div style={boxStyle}> 
+                                <h1>Nav</h1>
+                                <CheckBtn label='Unavailable' onClick={() => setIssueNavUnavailable(!issueNavUnavailable)}/>
+                                <CheckBtn label='GPS' onClick={() => setIssueNavGps(!issueNavGps)}/>
+                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                            </div>
+                        </Flex>
                     </Flex>
-                </div>
+                    <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
 
+                    <div style={{marginTop: '20px'}}>
+                        <h1>Actions performed</h1>
+                    </div>
 
-                <div style={{marginTop: '20px'}}>
-                    <h1>Issues</h1>
-                </div>
+                    <CheckBtn label={`Tram rebooted ${actionTramReboot} times`} onClick={() => setActionTramReboot(actionTramReboot + 1)}/>
 
-                <Flex gap="middle" align="start" vertical>
-                    <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                        <div style={boxStyle}> 
-                            <h1>Master</h1>
-                            <CheckBtn label='Unavailable' onClick={() => setIssueMasterUnavailable(!issueMasterUnavailable)}/>
-                            <CheckBtn label='Npme' onClick={() => setIssueMasterNpme(!issueMasterNpme)}/>
-                            <CheckBtn label='Redis' onClick={() => setIssueMasterRedis(!issueMasterRedis)}/>
-                            <CheckBtn label='Jet_Hard' onClick={() => setIssueMasterJetHard(!issueMasterJetHard)}/>
-                            <CheckBtn label='Deserializer' onClick={() => setIssueMasterDeserializer(!issueMasterDeserializer)}/>
-                            <CheckBtn label='No Video' onClick={() => setIssueMasterNoVideo(!issueMasterNoVideo)}/>
-                            <CheckBtn label='Camera error' onClick={() => setIssueMasterCamera(!issueMasterCamera)}/>
-                            <CheckBtn label='Can error' onClick={() => setIssueMasterCan(!issueMasterCan)}/>
-                            <CheckBtn label='IMU' onClick={() => setIssueMasterImu(!issueMasterImu)}/>
-                            <CheckBtn label='Geomap' onClick={() => setIssueMasterMap(!issueMasterMap)}/>
-                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                        </div>
-                        <div style={boxStyle}> 
-                            <h1>Slave</h1>
-                            <CheckBtn label='Unavailable' onClick={() => setIssueSlaveUnavailable(!issueSlaveUnavailable)}/>
-                            <CheckBtn label='Jet_Hard' onClick={() => setIssueSlaveJetHard(!issueSlaveJetHard)}/>
-                            <CheckBtn label='Deserializer' onClick={() => setIssueSlaveDeserializer(!issueSlaveDeserializer)}/>
-                            <CheckBtn label='No Video' onClick={() => setIssueSlaveNoVideo(!issueSlaveNoVideo)}/>
-                            <CheckBtn label='Radar' onClick={() => setIssueSlaveRadar(!issueSlaveRadar)}/>
-                            <CheckBtn label='Selects' onClick={() => setIssueSlaveSelects(!issueSlaveSelects)}/>
-                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                        </div>
-                        <div style={boxStyle}> 
-                            <h1>Nav</h1>
-                            <CheckBtn label='Unavailable' onClick={() => setIssueNavUnavailable(!issueNavUnavailable)}/>
-                            <CheckBtn label='GPS' onClick={() => setIssueNavGps(!issueNavGps)}/>
-                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                        </div>
+                    <Flex gap="middle" align="start" vertical>
+                        <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
+                            <div style={boxStyle}> 
+                                <h1>Master</h1>
+                                <CheckBtn label={`ReVPN ${actionRevpn} times`} onClick={() => setActionRevpn(actionRevpn + 1)}/>
+                                <CheckBtn label='Restart Docker' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Restart Jet_Hard' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Cam driver reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                                
+                            </div>
+                            <div style={boxStyle}> 
+                                <h1>Slave</h1>                       
+                                <CheckBtn label='Restart Docker' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Restart Jet_Hard' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Cam driver reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                            </div>
+                            <div style={boxStyle}> 
+                                <h1>Nav</h1>
+                                <CheckBtn label='Restart cgn*' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
+                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                            </div>
+                        </Flex>
                     </Flex>
-                </Flex>
-                <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
-
-                <div style={{marginTop: '20px'}}>
-                    <h1>Actions performed</h1>
-                </div>
-
-                <CheckBtn label={`Tram rebooted ${actionTramReboot} times`} onClick={() => setActionTramReboot(actionTramReboot + 1)}/>
-
-                <Flex gap="middle" align="start" vertical>
-                    <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                        <div style={boxStyle}> 
-                            <h1>Master</h1>
-                            <CheckBtn label={`ReVPN ${actionRevpn} times`} onClick={() => setActionRevpn(actionRevpn + 1)}/>
-                            <CheckBtn label='Restart Docker' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Restart Jet_Hard' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Cam driver reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                            
-                        </div>
-                        <div style={boxStyle}> 
-                            <h1>Slave</h1>                       
-                            <CheckBtn label='Restart Docker' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Restart Jet_Hard' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Cam driver reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                        </div>
-                        <div style={boxStyle}> 
-                            <h1>Nav</h1>
-                            <CheckBtn label='Restart cgn*' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
-                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                        </div>
-                    </Flex>
-                </Flex>
-                <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
-                <Form.Item >
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </ConfigProvider>
-            <Clipboard />
-        </Form>
+                    <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
+                    <Form.Item >
+                        <Button type="primary" htmlType="submit">
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </ConfigProvider>
+                
+            </Form>
+        </>
         
     );
 }

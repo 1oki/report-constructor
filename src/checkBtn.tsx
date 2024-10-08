@@ -7,25 +7,23 @@ interface BtnProps {
   label: string,
   textColor?: string,
   bgColor?: string,
+  onClick(): void,
 }
 
 const CheckBtn = (props: BtnProps) => {
   const [checked, setChecked] = useState(false);
 
-  const { label, textColor, bgColor } = props;
-
-  // const bgColor = 'orange'
+  const { label, textColor, bgColor, onClick } = props;
 
   const toggleChecked = () => {
     setChecked(!checked);
+    onClick();
   };
 
   const onChange: CheckboxProps['onChange'] = (e) => {
     console.log('checked = ', e.target.checked);
     setChecked(e.target.checked);
   };
-
-  // const label = `${checked ? 'Checked' : 'Unchecked'}`;
 
   let btnStyle: ButtonType = 'default';
   if(checked) {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Flex, FlexProps, Input, Checkbox, Form} from 'antd';
-import type { FormProps } from 'antd';
+import { Button, Flex, FlexProps, Input, Checkbox, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
 import { report } from 'process';
+import Clipboard from './clipboard';
 
 type FieldType = {
     tramNumber: string,
@@ -32,10 +32,6 @@ type FieldType = {
 
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
-    // setReport({
-    //     ...report,
-
-    // })
   };
   
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -46,6 +42,7 @@ type FieldType = {
 
 
 const Forms: React.FC = () => {
+    
 
     const initialValues = {
         tramNumber: '',
@@ -73,29 +70,60 @@ const Forms: React.FC = () => {
         issueNavGps: false,
     }
 
-    const [ tramNumber, setTramNumber ] = useState(null)
-    const [ redIcons, setRedIcons ] = useState(null)
-    const [ whiteIcons, setWhiteIcons ] = useState(null)
-    const [ greenIcons, setGreenIcons ] = useState(null)
-    const [ driverReport, setDriverReport ] = useState(null)
+    const [ tramNumber, setTramNumber ] = useState<string>('')
+    const [ redIcons, setRedIcons ] = useState<boolean>(false)
+    const [ whiteIcons, setWhiteIcons ] = useState<boolean>(false)
+    const [ greenIcons, setGreenIcons ] = useState<boolean>(false)
+    const [ driverReport, setDriverReport ] = useState<String>('')
 
-    const [ issueMasterUnavailable, setIssueMasterUnavailable ] = useState(null)
-    const [ issueMasterNpme, setIssueMasterNpme ] = useState(null)
-    const [ issueMasterRedis, setIssueMasterRedis ] = useState(null)
-    const [ issueMasterJetHard, setIssueMasterJetHard ] = useState(null)
-    const [ issueMasterDeserializer, setIssueMasterDeserializer ] = useState(null)
-    const [ issueMasterNoVideo, setIssueMasterNoVideo ] = useState(null)
-    const [ issueMasterCan, setIssueMasterCan ] = useState(null)
-    const [ issueMasterImu, setIssueMasterImu ] = useState(null)
-    const [ issueMasterMap, setIssueMasterMap ] = useState(null)
+    const [ issueMasterUnavailable, setIssueMasterUnavailable ] = useState<boolean>(false)
+    const [ issueMasterNpme, setIssueMasterNpme ] = useState<boolean>(false)
+    const [ issueMasterRedis, setIssueMasterRedis ] = useState<boolean>(false)
+    const [ issueMasterJetHard, setIssueMasterJetHard ] = useState<boolean>(false)
+    const [ issueMasterDeserializer, setIssueMasterDeserializer ] = useState<boolean>(false)
+    const [ issueMasterNoVideo, setIssueMasterNoVideo ] = useState<boolean>(false)
+    const [ issueMasterCamera, setIssueMasterCamera ] = useState<boolean>(false)
+    const [ issueMasterCan, setIssueMasterCan ] = useState<boolean>(false)
+    const [ issueMasterImu, setIssueMasterImu ] = useState<boolean>(false)
+    const [ issueMasterMap, setIssueMasterMap ] = useState<boolean>(false)
 
-    const [ issueSlaveUnavailable, setIssueSlaveUnavailable ] = useState(null)
-    const [ issueSlaveJetHard, setIssueSlaveJetHard ] = useState(null)
-    const [ issueSlaveNoVideo, setIssueSlaveNoVideo ] = useState(null)
-    const [ issueSlaveDeserializer, setIssueSlaveDeserializer ] = useState(null)
-    const [ issueSlaveRadar, setIssueSlaveRadar ] = useState(null)
+    const [ issueSlaveUnavailable, setIssueSlaveUnavailable ] = useState<boolean>(false)
+    const [ issueSlaveJetHard, setIssueSlaveJetHard ] = useState<boolean>(false)
+    const [ issueSlaveNoVideo, setIssueSlaveNoVideo ] = useState<boolean>(false)
+    const [ issueSlaveDeserializer, setIssueSlaveDeserializer ] = useState<boolean>(false)
+    const [ issueSlaveRadar, setIssueSlaveRadar ] = useState<boolean>(false)
+    const [ issueSlaveSelects, setIssueSlaveSelects ] = useState<boolean>(false)
 
-    const [ issueNavGps, setIssueNavGps ] = useState(null)
+    const [ issueNavUnavailable, setIssueNavUnavailable ] = useState<boolean>(false)
+    const [ issueNavGps, setIssueNavGps ] = useState<boolean>(false)
+
+    const [ actionTramReboot, setActionTramReboot ] = useState<number>(0)
+    const [ actionRevpn, setActionRevpn ] = useState<number>(0)
+
+    const [ actionMasterReVPN, setActionMasterReVPN ] = useState<boolean>(false)
+    const [ actionMasterRestartDocker, setActionMasterRestartDocker ] = useState<boolean>(false)
+    const [ actionMasterRestartJetHard, setActionMasterRestartJetHard ] = useState<boolean>(false)
+    const [ actionMasterReinstallCamDriver, setActionMasterReinstallCamDriver ] = useState<boolean>(false)
+    const [ actionMasterReinstallBundle, setActionMasterReinstallBundle ] = useState<boolean>(false)
+    const [ actionMasterReboot, setActionMasterReboot ] = useState<boolean>(false)
+    const [ actionMasterShutdownR, setActionMasterShutdownR ] = useState<boolean>(false)
+
+    
+    const [ actionSlaveRestartDocker, setActionSlaveRestartDocker ] = useState<boolean>(false)
+    const [ actionSlaveRestartJetHard, setActionSlaveRestartJetHard ] = useState<boolean>(false)
+    const [ actionSlaveReinstallCamDriver, setActionSlaveReinstallCamDriver ] = useState<boolean>(false)
+    const [ actionSlaveReinstallBundle, setActionSlaveReinstallBundle ] = useState<boolean>(false)
+    const [ actionSlaveReboot, setActionSlaveReboot ] = useState<boolean>(false)
+    const [ actionSlaveShutdownR, setActionSlaveShutdownR ] = useState<boolean>(false)
+
+    
+    const [ actionNavRestartCgn, setActionNavRestartCgn ] = useState<boolean>(false)
+    const [ actionNavReinstallBundle, setActionNavReinstallBundle ] = useState<boolean>(false)
+    const [ actionNavReboot, setActionNavReboot ] = useState<boolean>(false)
+    const [ actionNavShutdownR, setActionNavShutdownR ] = useState<boolean>(false)
+
+
+    console.log('greenIcons', greenIcons)
 
     const containerStyle: React.CSSProperties = { 
         width: '100%',
@@ -126,122 +154,130 @@ const Forms: React.FC = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
         >
-            <div style={{marginTop: '10px'}}>
-                <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}/>
-            </div>
-            <div style={{marginTop: '20px'}}>
-                <h1>Driver Report</h1>
-            </div>
-            <div style={{marginTop: '10px'}}>
-                
+            <ConfigProvider
+                theme={{
+                token: {
+                    // Seed Token
+                    colorPrimary: 'orange',
+                },
+                }}
+            >
+                <div style={{marginTop: '10px'}}>
+                    <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}/>
+                </div>
+
+                <div style={{marginTop: '20px'}}>
+                    <h1>Driver Report</h1>
+                </div>
+
+                <div style={{marginTop: '10px'}}>
                     <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                    <Form.Item<FieldType>
-                    name="redIcons"
-                >
-                        <CheckBtn label='Red Icons' textColor='red'/>
+                        <Form.Item<FieldType> name="redIcons" >
+                            <CheckBtn label='Red Icons' textColor='red' onClick={() => setRedIcons(!redIcons)}/>
                         </Form.Item>
-                        <Form.Item<FieldType>
-                    name="whiteIcons"
-                >
-                        <CheckBtn label='White Icons' />
+                        <Form.Item<FieldType>  name="whiteIcons" >
+                            <CheckBtn label='White Icons' onClick={() => setWhiteIcons(!whiteIcons)}/>
                         </Form.Item>
-                        <Form.Item<FieldType>
-                    name="greenIcons"
-                >
-                        <CheckBtn label='Green Icons' textColor='green'/>
+                        <Form.Item<FieldType> name="greenIcons" >
+                            <CheckBtn label='Green Icons' textColor='green' onClick={() => setGreenIcons(!greenIcons)}/>
                         </Form.Item>
-                        <Form.Item<FieldType>
-                    name="driverReport"
-                >
-                        <p>
-                            <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }}/>
-                        </p>
+                        <Form.Item<FieldType> name="driverReport" >
+                            <p>
+                                <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }}/>
+                            </p>
                         </Form.Item>
                     </Flex>
-                
-            </div>
+                </div>
 
 
-            <div style={{marginTop: '20px'}}>
-                <h1>Issues</h1>
-            </div>
-            <Flex gap="middle" align="start" vertical>
-                <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                    <div style={boxStyle}> 
-                        <h1>Master</h1>
-                        <CheckBtn label='Unavailable'/>
-                        <CheckBtn label='Npme'/>
-                        <CheckBtn label='Redis'/>
-                        <CheckBtn label='Jet_Hard'/>
-                        <CheckBtn label='Deserializer'/>
-                        <CheckBtn label='No Video'/>
-                        <CheckBtn label='Can error'/>
-                        <CheckBtn label='IMU'/>
-                        <CheckBtn label='Geomap'/>
-                        <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                    </div>
-                    <div style={boxStyle}> 
-                        <h1>Slave</h1>
-                        <CheckBtn label='Unavailable'/>
-                        <CheckBtn label='Radar'/>
-                        <CheckBtn label='Deserializer'/>
-                        <CheckBtn label='No Video'/>
-                        <CheckBtn label='Jet_Hard'/>
-                        <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                    </div>
-                    <div style={boxStyle}> 
-                        <h1>Nav</h1>
-                        <CheckBtn label='Unavailable'/>
-                        <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                    </div>
+                <div style={{marginTop: '20px'}}>
+                    <h1>Issues</h1>
+                </div>
+
+                <Flex gap="middle" align="start" vertical>
+                    <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
+                        <div style={boxStyle}> 
+                            <h1>Master</h1>
+                            <CheckBtn label='Unavailable' onClick={() => setIssueMasterUnavailable(!issueMasterUnavailable)}/>
+                            <CheckBtn label='Npme' onClick={() => setIssueMasterNpme(!issueMasterNpme)}/>
+                            <CheckBtn label='Redis' onClick={() => setIssueMasterRedis(!issueMasterRedis)}/>
+                            <CheckBtn label='Jet_Hard' onClick={() => setIssueMasterJetHard(!issueMasterJetHard)}/>
+                            <CheckBtn label='Deserializer' onClick={() => setIssueMasterDeserializer(!issueMasterDeserializer)}/>
+                            <CheckBtn label='No Video' onClick={() => setIssueMasterNoVideo(!issueMasterNoVideo)}/>
+                            <CheckBtn label='Camera error' onClick={() => setIssueMasterCamera(!issueMasterCamera)}/>
+                            <CheckBtn label='Can error' onClick={() => setIssueMasterCan(!issueMasterCan)}/>
+                            <CheckBtn label='IMU' onClick={() => setIssueMasterImu(!issueMasterImu)}/>
+                            <CheckBtn label='Geomap' onClick={() => setIssueMasterMap(!issueMasterMap)}/>
+                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                        </div>
+                        <div style={boxStyle}> 
+                            <h1>Slave</h1>
+                            <CheckBtn label='Unavailable' onClick={() => setIssueSlaveUnavailable(!issueSlaveUnavailable)}/>
+                            <CheckBtn label='Jet_Hard' onClick={() => setIssueSlaveJetHard(!issueSlaveJetHard)}/>
+                            <CheckBtn label='Deserializer' onClick={() => setIssueSlaveDeserializer(!issueSlaveDeserializer)}/>
+                            <CheckBtn label='No Video' onClick={() => setIssueSlaveNoVideo(!issueSlaveNoVideo)}/>
+                            <CheckBtn label='Radar' onClick={() => setIssueSlaveRadar(!issueSlaveRadar)}/>
+                            <CheckBtn label='Selects' onClick={() => setIssueSlaveSelects(!issueSlaveSelects)}/>
+                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                        </div>
+                        <div style={boxStyle}> 
+                            <h1>Nav</h1>
+                            <CheckBtn label='Unavailable' onClick={() => setIssueNavUnavailable(!issueNavUnavailable)}/>
+                            <CheckBtn label='GPS' onClick={() => setIssueNavGps(!issueNavGps)}/>
+                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                        </div>
+                    </Flex>
                 </Flex>
-            </Flex>
-            <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
+                <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
 
+                <div style={{marginTop: '20px'}}>
+                    <h1>Actions performed</h1>
+                </div>
 
-            <div style={{marginTop: '20px'}}>
-                <h1>Actions performed</h1>
-            </div>
-            <Flex gap="middle" align="start" vertical>
-                <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                    <div style={boxStyle}> 
-                        <h1>Master</h1>
-                        <CheckBtn label='Restart Docker'/>
-                        <CheckBtn label='Restart Jet_Hard'/>
-                        <CheckBtn label='Cam driver reinstall'/>
-                        <CheckBtn label='Bundle reinstall'/>
-                        <CheckBtn label='Sudo Reboot'/>
-                        <CheckBtn label='Sudo Shutdown -r now'/>
-                        <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                        
-                    </div>
-                    <div style={boxStyle}> 
-                        <h1>Slave</h1>                       
-                        <CheckBtn label='Restart Docker'/>
-                        <CheckBtn label='Restart Jet_Hard'/>
-                        <CheckBtn label='Cam driver reinstall'/>
-                        <CheckBtn label='Bundle reinstall'/>
-                        <CheckBtn label='Sudo Reboot'/>
-                        <CheckBtn label='Sudo Shutdown -r now'/>
-                        <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                    </div>
-                    <div style={boxStyle}> 
-                        <h1>Nav</h1>
-                        <CheckBtn label='Restart cgn*'/>
-                        <CheckBtn label='Bundle reinstall'/>
-                        <CheckBtn label='Sudo Reboot'/>
-                        <CheckBtn label='Sudo Shutdown -r now'/>
-                        <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
-                    </div>
+                <CheckBtn label={`Tram rebooted ${actionTramReboot} times`} onClick={() => setActionTramReboot(actionTramReboot + 1)}/>
+
+                <Flex gap="middle" align="start" vertical>
+                    <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
+                        <div style={boxStyle}> 
+                            <h1>Master</h1>
+                            <CheckBtn label={`ReVPN ${actionRevpn} times`} onClick={() => setActionRevpn(actionRevpn + 1)}/>
+                            <CheckBtn label='Restart Docker' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Restart Jet_Hard' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Cam driver reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                            
+                        </div>
+                        <div style={boxStyle}> 
+                            <h1>Slave</h1>                       
+                            <CheckBtn label='Restart Docker' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Restart Jet_Hard' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Cam driver reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                        </div>
+                        <div style={boxStyle}> 
+                            <h1>Nav</h1>
+                            <CheckBtn label='Restart cgn*' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Bundle reinstall' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Sudo Reboot' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <CheckBtn label='Sudo Shutdown -r now' onClick={() => setGreenIcons(!greenIcons)}/>
+                            <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}}/>
+                        </div>
+                    </Flex>
                 </Flex>
-            </Flex>
-            <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
-
-            <Form.Item >
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
+                <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}}/>
+                <Form.Item >
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </ConfigProvider>
+            <Clipboard />
         </Form>
         
     );

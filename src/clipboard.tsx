@@ -22,6 +22,7 @@ const Clipboard = () => {
     let jetHardStatus = "sudo systemctl status cgn_jetson_hardware.service";
     let jetHardRestart = "sudo systemctl restart cgn_jetson_hardware.service";
     let dockerRestart = "sudo systemctl restart docker";
+    let dockerLogsNpme = "docker logs npme";
     let reboot = "sudo reboot";
     let bundleReinstall = "cd  ~/releases/active_release && ./run_init_release.sh  --force";
     let NavBundleReinstall1 = "cd ~/releases/active_release/navigation_unit/";
@@ -32,6 +33,7 @@ const Clipboard = () => {
     let logsDir = "/var/log/ ";
     let kernLog = "kern.log";
     let sysLog = "sys.log";
+    let imuLog = "xxd /dev/ttyS5";
     let allLogs = `cd /home/agrodroid/Downloads/ && 
     docker logs --tail 5000 npme > npme_restarting.log && 
     systemd-analyze plot > sys-anal_plot.svg && 
@@ -95,6 +97,9 @@ const Clipboard = () => {
                 <button onClick={() => navigator.clipboard.writeText(dockerRestart)}>{dockerRestart}</button> 
                 </p>
                 <p>
+                <button onClick={() => navigator.clipboard.writeText(dockerLogsNpme)}>{dockerLogsNpme}</button> 
+                </p>
+                <p>
                 <button onClick={() => navigator.clipboard.writeText(reboot)}>{reboot}</button> 
                 </p>
             </div>
@@ -142,6 +147,7 @@ const Clipboard = () => {
                 <button onClick={() => navigator.clipboard.writeText(logsDir)}>{logsDir}</button> 
                 <p><button onClick={() => navigator.clipboard.writeText(kernLog)}>{kernLog}</button></p>
                 <p><button onClick={() => navigator.clipboard.writeText(sysLog)}>{sysLog}</button></p>
+                <p><button onClick={() => navigator.clipboard.writeText(imuLog)}>imuLog</button></p>
                 <p><button onClick={() => navigator.clipboard.writeText(allLogs)}>allLogs</button></p>
             </div>
         </Flex>

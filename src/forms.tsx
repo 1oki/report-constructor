@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Flex, FlexProps, Input, Checkbox, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
+import { useDebounce } from "use-debounce";
+
 
 type ReportType = {
     tramNumber: string,
@@ -128,6 +130,10 @@ const Forms: React.FC = () => {
         setReport(state => ({ ...state, [section]: !state[section]}))
         console.log('report.section', report[section])
     }
+    const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // setReport(state => ({ ...state, [section]: event.target.value}))
+        console.log(event.target.value);
+    }
 
     const containerStyle: React.CSSProperties = { 
         width: '100%',
@@ -162,7 +168,7 @@ const Forms: React.FC = () => {
                     }}
                 >
                     <div style={{marginTop: '10px'}}>
-                        <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}/>
+                        <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}  onChange={() => handleInput}/>
                     </div>
 
                     <div style={{marginTop: '20px'}}>

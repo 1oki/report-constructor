@@ -12,6 +12,7 @@ const Clipboard = () => {
     let videostream = "ll /dev/vid* ";
     let releasesCamDrivers = "cd ~/releases/active_release/cgn_cam/drivers/  ";
     let ll = 'll';
+    let rmRf = 'rm -rf';
     let tarXzvf = 'tar xzvf ./*tar.gz ';
     let cdD3 = "cd ./d3";
     let dpkg = "sudo dpkg -i ./*deb";
@@ -30,7 +31,7 @@ const Clipboard = () => {
     let NavBundleReinstall3 = "./init_release.py";
 
 
-    let logsDir = "/var/log/ ";
+    let logsDir = "cd /var/log/";
     let kernLog = "kern.log";
     let sysLog = "sys.log";
     let imuLog = "xxd /dev/ttyS5";
@@ -43,6 +44,7 @@ const Clipboard = () => {
 
     return (
         <>
+        <h1>Clipboard</h1>
         <Flex  justify={'space-around'} align={'flex-start'}>
             <div>
                 <p>connectToNavBlock</p>
@@ -118,6 +120,9 @@ const Clipboard = () => {
                     <button onClick={() => navigator.clipboard.writeText(ll)}>{ll}</button> 
                 </p>
                 <p>
+                    <button onClick={() => navigator.clipboard.writeText(rmRf)}>{rmRf}</button> 
+                </p>
+                <p>
                     <button onClick={() => navigator.clipboard.writeText(tarXzvf)}>{tarXzvf}</button> 
                 </p>
                 <p>
@@ -134,6 +139,7 @@ const Clipboard = () => {
             <div>
                 <p>Control Block Bundle Reinstall</p>
                 <button onClick={() => navigator.clipboard.writeText(bundleReinstall)}>{bundleReinstall}</button> 
+                <p><br/></p>
                 <p>Nav Block Bundle Reinstall</p>
                 <p><button onClick={() => navigator.clipboard.writeText(NavBundleReinstall1)}>{NavBundleReinstall1}</button></p>
                 <p><button onClick={() => navigator.clipboard.writeText(NavBundleReinstall2)}>{NavBundleReinstall2}</button></p>
@@ -141,15 +147,13 @@ const Clipboard = () => {
             </div>
 
         </Flex>
-        <Flex  justify={'space-around'} align={'flex-start'}>
-            <div>
-                <p>Logs</p>
-                <button onClick={() => navigator.clipboard.writeText(logsDir)}>{logsDir}</button> 
-                <p><button onClick={() => navigator.clipboard.writeText(kernLog)}>{kernLog}</button></p>
-                <p><button onClick={() => navigator.clipboard.writeText(sysLog)}>{sysLog}</button></p>
-                <p><button onClick={() => navigator.clipboard.writeText(imuLog)}>imuLog</button></p>
-                <p><button onClick={() => navigator.clipboard.writeText(allLogs)}>allLogs</button></p>
-            </div>
+        <p>Logs</p>
+        <Flex  justify={'space-around'} align={'flex-start'} flex-direction={'row'}>
+            <p><button onClick={() => navigator.clipboard.writeText(logsDir)}>{logsDir}</button></p>
+            <p><button onClick={() => navigator.clipboard.writeText(kernLog)}>{kernLog}</button></p>
+            <p><button onClick={() => navigator.clipboard.writeText(sysLog)}>{sysLog}</button></p>
+            <p><button onClick={() => navigator.clipboard.writeText(imuLog)}>imuLog</button></p>
+            <p><button onClick={() => navigator.clipboard.writeText(allLogs)}>allLogs</button></p>
         </Flex>
         </>
     )

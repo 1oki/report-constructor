@@ -29,12 +29,13 @@ type ReportType = {
     issueSlaveJetHard?: boolean,
     issueSlaveNoVideo?: boolean,
     issueSlaveDeserializer?: boolean,
+    issueSlaveCamera?: boolean,
     issueSlaveRadar?: boolean,
     issueSlaveSelects?: boolean,
     issueSlaveNote?: string,
 
     issueNavUnavailable?: boolean, 
-    issueNavGps?: boolean,
+    issueNavCgn?: boolean,
     issueNavNote?: string,
 
     issueNote?: string,
@@ -75,10 +76,68 @@ type ReportType = {
 
   const { TextArea } = Input;
 
-  const report1 = {
-    key1: 'value1',
-    key2: 'value2',
-    key3: 'value3',
+  const glossary = {
+    tramNumber: '',
+        redIcons: 'Красные иконки',
+        whiteIcons: 'Белые иконки',
+        greenIcons: 'Зеленые иконки',
+        driverReport: '',
+
+        issueMasterUnavailable: 'Мастер недоступен',
+        issueMasterNpme: 'Ошибка НПМЕ',
+        issueMasterRedis: 'Ошибка redis',
+        issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
+        issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
+        issueMasterNoVideo: 'Нет видео потока на мастере',
+        issueMasterCamera: 'Проблема камеры на мастере',
+        issueMasterSelects: 'Ошибки селектов на мастере',
+        issueMasterCan: 'Нет данных по can',
+        issueMasterImu: 'Ошибки IMU',
+        issueMasterMap: 'Ошибки карты',
+        issueMasterNote: '',
+
+        issueSlaveUnavailable: 'Слэйв недоступен',
+        issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
+        issueSlaveNoVideo: 'Нет видео потока на слэйве',
+        issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
+        issueSlaveCamera: 'Проблема камеры на слэйве',
+        issueSlaveRadar: 'Ошибки радара',
+        issueSlaveSelects: 'Ошибки селектов на слэйве',
+        issueSlaveNote: '',
+
+        issueNavUnavailable: 'БН недоступен',
+        issueNavCgn: 'Ошибки служб cgn',
+        issueNavNote: '',
+
+        issueNote: '',
+
+        actionTramReboot: false,
+        actionRevpn: false,
+
+        actionMasterReVPN: false,
+        actionMasterRestartDocker: false,
+        actionMasterRestartJetHard: false,
+        actionMasterReinstallCamDriver: false,
+        actionMasterReinstallBundle: false,
+        actionMasterReboot: false,
+        actionMasterShutdownR: false,
+        actionMasterNote: '',
+
+        actionSlaveRestartDocker: false,
+        actionSlaveRestartJetHard: false,
+        actionSlaveReinstallCamDriver: false,
+        actionSlaveReinstallBundle: false,
+        actionSlaveReboot: false,
+        actionSlaveShutdownR: false,
+        actionSlaveNote: '',
+
+        actionNavRestartCgn: false,
+        actionNavReinstallBundle: false,
+        actionNavReboot: false,
+        actionNavShutdownR: false,
+        actionNavNote: '',
+
+        actionNote: '',
   }
   const data = [
     { field1: "row1-col1", field2: "row1-col2", field3: "row1-col3" },
@@ -114,12 +173,13 @@ const Forms: React.FC = () => {
         issueSlaveJetHard: false,
         issueSlaveNoVideo: false,
         issueSlaveDeserializer: false,
+        issueSlaveCamera: false,
         issueSlaveRadar: false,
         issueSlaveSelects: false,
         issueSlaveNote: '',
 
         issueNavUnavailable: false,
-        issueNavGps: false,
+        issueNavCgn: false,
         issueNavNote: '',
 
         issueNote: '',
@@ -265,7 +325,7 @@ const Forms: React.FC = () => {
                             <div style={boxStyle}> 
                                 <h1>Nav</h1>
                                 <CheckBtn label='Unavailable' onClick={() => handleClick('issueNavUnavailable')}/>
-                                <CheckBtn label='GPS' onClick={() => handleClick('issueNavGps')}/>
+                                <CheckBtn label='GPS' onClick={() => handleClick('issueNavCgn')}/>
                                 <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'issueNavNote')}/>
                             </div>
                         </Flex>
@@ -321,7 +381,7 @@ const Forms: React.FC = () => {
                 </ConfigProvider>
                 
             </Form>
-            <DownloadCSV data={report1} fileName="tram_report" />
+            <DownloadCSV data={report} fileName="tram_report" />
             <ExportCSV data={data} fileName="tram_report.csv" />
         </>
         

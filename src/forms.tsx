@@ -78,66 +78,66 @@ type ReportType = {
 
   const glossary = {
     tramNumber: '',
-        redIcons: 'Красные иконки',
-        whiteIcons: 'Белые иконки',
-        greenIcons: 'Зеленые иконки',
-        driverReport: '',
+    redIcons: 'Красные иконки',
+    whiteIcons: 'Белые иконки',
+    greenIcons: 'Зеленые иконки',
+    driverReport: '',
 
-        issueMasterUnavailable: 'Мастер недоступен',
-        issueMasterNpme: 'Ошибка НПМЕ',
-        issueMasterRedis: 'Ошибка redis',
-        issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
-        issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
-        issueMasterNoVideo: 'Нет видео потока на мастере',
-        issueMasterCamera: 'Проблема камеры на мастере',
-        issueMasterSelects: 'Ошибки селектов на мастере',
-        issueMasterCan: 'Нет данных по can',
-        issueMasterImu: 'Ошибки IMU',
-        issueMasterMap: 'Ошибки карты',
-        issueMasterNote: '',
+    issueMasterUnavailable: 'Мастер недоступен',
+    issueMasterNpme: 'Ошибка НПМЕ',
+    issueMasterRedis: 'Ошибка redis',
+    issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
+    issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
+    issueMasterNoVideo: 'Нет видео потока на мастере',
+    issueMasterCamera: 'Проблема камеры на мастере',
+    issueMasterSelects: 'Ошибки селектов на мастере',
+    issueMasterCan: 'Нет данных по can',
+    issueMasterImu: 'Ошибки IMU',
+    issueMasterMap: 'Ошибки карты',
+    issueMasterNote: '',
 
-        issueSlaveUnavailable: 'Слэйв недоступен',
-        issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
-        issueSlaveNoVideo: 'Нет видео потока на слэйве',
-        issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
-        issueSlaveCamera: 'Проблема камеры на слэйве',
-        issueSlaveRadar: 'Ошибки радара',
-        issueSlaveSelects: 'Ошибки селектов на слэйве',
-        issueSlaveNote: '',
+    issueSlaveUnavailable: 'Слэйв недоступен',
+    issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
+    issueSlaveNoVideo: 'Нет видео потока на слэйве',
+    issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
+    issueSlaveCamera: 'Проблема камеры на слэйве',
+    issueSlaveRadar: 'Ошибки радара',
+    issueSlaveSelects: 'Ошибки селектов на слэйве',
+    issueSlaveNote: '',
 
-        issueNavUnavailable: 'БН недоступен',
-        issueNavCgn: 'Ошибки служб cgn',
-        issueNavNote: '',
+    issueNavUnavailable: 'БН недоступен',
+    issueNavCgn: 'Ошибки служб cgn',
+    issueNavNote: '',
 
-        issueNote: '',
+    issueNote: '',
 
-        actionTramReboot: false,
-        actionRevpn: false,
+    actionTramReboot: 'Перезагрузка трамвая',
+    actionRevpn: false,
 
-        actionMasterReVPN: false,
-        actionMasterRestartDocker: false,
-        actionMasterRestartJetHard: false,
-        actionMasterReinstallCamDriver: false,
-        actionMasterReinstallBundle: false,
-        actionMasterReboot: false,
-        actionMasterShutdownR: false,
-        actionMasterNote: '',
+    actionMasterReVPN: 'Ревпн',
+    actionMasterRestartDocker: 'Перезагрузка докера на мастере',
+    actionMasterRestartJetHard: 'Перезагрузка jetson hardware на мастере',
+    actionMasterReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
+    actionMasterReinstallBundle: 'Переуставновка бандла на мастере',
+    actionMasterReboot: 'Sudo reboot мастера',
+    actionMasterShutdownR: 'Shutdown -r now мастера',
+    actionMasterNote: '',
 
-        actionSlaveRestartDocker: false,
-        actionSlaveRestartJetHard: false,
-        actionSlaveReinstallCamDriver: false,
-        actionSlaveReinstallBundle: false,
-        actionSlaveReboot: false,
-        actionSlaveShutdownR: false,
-        actionSlaveNote: '',
+    actionSlaveRestartDocker: 'Перезагрузка докера на слэйве',
+    actionSlaveRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
+    actionSlaveReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
+    actionSlaveReinstallBundle: false,
+    actionSlaveReboot: 'Sudo reboot слэйва',
+    actionSlaveShutdownR: 'Shutdown -r now слэйва',
+    actionSlaveNote: '',
 
-        actionNavRestartCgn: false,
-        actionNavReinstallBundle: false,
-        actionNavReboot: false,
-        actionNavShutdownR: false,
-        actionNavNote: '',
+    actionNavRestartCgn: 'Перезагрузка служб cgn* на БН',
+    actionNavReinstallBundle: 'Переуставновка бандла на БН',
+    actionNavReboot: 'Sudo reboot БН',
+    actionNavShutdownR: 'Shutdown -r now БН',
+    actionNavNote: '',
 
-        actionNote: '',
+    actionNote: '',
   }
   const data = [
     { field1: "row1-col1", field2: "row1-col2", field3: "row1-col3" },
@@ -147,6 +147,19 @@ type ReportType = {
 
 
 const Forms: React.FC = () => {
+    const containerStyle: React.CSSProperties = { 
+        width: '100%',
+        color: 'white',
+    };
+
+    const boxStyle: React.CSSProperties = { 
+        width: '33%',
+        minHeight: 120,
+        borderRadius: 6,
+        // border: '1px solid #777',
+        color: 'white',
+    };
+
     console.log('render')
 
     const initialValues: ReportType = {
@@ -218,32 +231,40 @@ const Forms: React.FC = () => {
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         console.log('Success:', report);
+        dataProcessing(report);
       };
       
-    
     const handleClick = (section: keyof ReportType) => {
-        console.log('section', section)
-        console.log('report.section', report[section])
+        // console.log('section', section)
+        // console.log('report.section', report[section])
         setReport(state => ({ ...state, [section]: !state[section]}))
-        console.log('report.section', report[section])
+        // console.log('report.section', report[section])
     }
     const handleInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, section: string) => {
         setReport(state => ({ ...state, [section]: event.target.value}))
-        console.log(event.target.value);
+        // console.log(event.target.value);
     }
 
-    const containerStyle: React.CSSProperties = { 
-        width: '100%',
-        color: 'white',
-      };
+    const dataProcessing = (report: ReportType) => {
 
-    const boxStyle: React.CSSProperties = { 
-        width: '33%',
-        minHeight: 120,
-        borderRadius: 6,
-        // border: '1px solid #777',
-        color: 'white',
-      };
+        const data = [];
+
+        for (let val of Object.entries(report)) {
+
+            if(typeof val[1] == 'string') {
+                console.log( val,' is string');
+                if(val[1] !== '') {
+                    data.push()
+                }
+            }
+            if(typeof val[1] == 'boolean') {
+                console.log( val,' is boolean');
+                
+            }
+        }
+    }
+    
+    
 
     return (
         <>
@@ -386,6 +407,7 @@ const Forms: React.FC = () => {
         </>
         
     );
+    
 }
 
 export default Forms;

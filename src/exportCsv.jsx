@@ -1,9 +1,11 @@
 const ExportCSV = ({ data, fileName }) => {
     const downloadCSV = () => {
       // Convert the data array into a CSV string
+
+
       const csvString = [
 
-        ["Header1", "Header2", "Header3"], // Specify your headers here
+        ["Номер", "ID БВТ", "Ошибки", "Предпринятые меры", "Статус"], // Specify your headers here
         ...data.map(item => [item.field1, item.field2, item.field3]) // Map your data fields accordingly
       ]
       .map(row => row.join(";"))
@@ -12,7 +14,7 @@ const ExportCSV = ({ data, fileName }) => {
       const csvString1 = ["1;2;3;4\r;a;b;c;d;\r;a;b;c;d\r;;a;b;c;d"]
 
       // Create a Blob from the CSV string
-      const blob = new Blob([csvString], { type: 'text/csv' });
+      const blob = new Blob(["\ufeff",csvString], {type: 'data:text/csv; charset=utf-8,' });
   
       // Generate a download link and initiate the download
       const url = URL.createObjectURL(blob);

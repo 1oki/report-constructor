@@ -12,7 +12,7 @@ const Clipboard = () => {
     let videostream = "ll /dev/vid* ";
     let releasesCamDrivers = "cd ~/releases/active_release/cgn_cam/drivers/  ";
     let ll = 'll';
-    let rmRf = 'rm -rf';
+    let rmRf = 'rm -rf ';
     let tarXzvf = 'tar xzvf ./*tar.gz ';
     let cdD3 = "cd ./d3";
     let dpkg = "sudo dpkg -i ./*deb";
@@ -29,6 +29,7 @@ const Clipboard = () => {
     let NavBundleReinstall1 = "cd ~/releases/active_release/navigation_unit/";
     let NavBundleReinstall2 = ". ../control_unit/virtual_env/host/base/bin/activate";
     let NavBundleReinstall3 = "./init_release.py";
+    let node = "cat /home/agrodroid/releases/common/node";
 
 
     let logsDir = "cd /var/log/";
@@ -144,6 +145,8 @@ const Clipboard = () => {
                 <p><button onClick={() => navigator.clipboard.writeText(NavBundleReinstall1)}>{NavBundleReinstall1}</button></p>
                 <p><button onClick={() => navigator.clipboard.writeText(NavBundleReinstall2)}>{NavBundleReinstall2}</button></p>
                 <p><button onClick={() => navigator.clipboard.writeText(NavBundleReinstall3)}>{NavBundleReinstall3}</button></p>
+                <p><br/></p>
+                <p><button onClick={() => navigator.clipboard.writeText(node)}>{node}</button></p>
             </div>
 
         </Flex>

@@ -7,10 +7,10 @@ import ExportCSV from './exportCsv';
 
 type ReportType = {
     tramNumber: string,
-    redIcons?: boolean,
-    whiteIcons?: boolean,
-    greenIcons?: boolean,
-    driverReport?: string,
+    driversReportRedIcons?: boolean,
+    driversReportWhiteIcons?: boolean,
+    driversReportGreenIcons?: boolean,
+    driversReportNote?: string,
 
     issueMasterUnavailable?: boolean,
     issueMasterNpme?: boolean,
@@ -70,81 +70,91 @@ type ReportType = {
   };
 
 
-  const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
+console.log('Failed:', errorInfo);
+};
 
-  const { TextArea } = Input;
+const { TextArea } = Input;
 
-  const glossary = {
+const glossary = {
+tramNumber: '',
+driversReportRedIcons: 'Красные иконки',
+driversReportWhiteIcons: 'Белые иконки',
+driversReportGreenIcons: 'Зеленые иконки',
+driversReportNote: '',
+
+issueMasterUnavailable: 'Мастер недоступен',
+issueMasterNpme: 'Ошибка НПМЕ',
+issueMasterRedis: 'Ошибка redis',
+issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
+issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
+issueMasterNoVideo: 'Нет видео потока на мастере',
+issueMasterCamera: 'Проблема камеры на мастере',
+issueMasterSelects: 'Ошибки селектов на мастере',
+issueMasterCan: 'Нет данных по can',
+issueMasterImu: 'Ошибки IMU',
+issueMasterMap: 'Ошибки карты',
+issueMasterNote: '',
+
+issueSlaveUnavailable: 'Слэйв недоступен',
+issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
+issueSlaveNoVideo: 'Нет видео потока на слэйве',
+issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
+issueSlaveCamera: 'Проблема камеры на слэйве',
+issueSlaveRadar: 'Ошибки радара',
+issueSlaveSelects: 'Ошибки селектов на слэйве',
+issueSlaveNote: '',
+
+issueNavUnavailable: 'БН недоступен',
+issueNavCgn: 'Ошибки служб cgn',
+issueNavNote: '',
+
+issueNote: '',
+
+actionTramReboot: 'Перезагрузка трамвая',
+actionRevpn: false,
+
+actionMasterReVPN: 'Ревпн',
+actionMasterRestartDocker: 'Перезагрузка докера на мастере',
+actionMasterRestartJetHard: 'Перезагрузка jetson hardware на мастере',
+actionMasterReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
+actionMasterReinstallBundle: 'Переуставновка бандла на мастере',
+actionMasterReboot: 'Sudo reboot мастера',
+actionMasterShutdownR: 'Shutdown -r now мастера',
+actionMasterNote: '',
+
+actionSlaveRestartDocker: 'Перезагрузка докера на слэйве',
+actionSlaveRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
+actionSlaveReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
+actionSlaveReinstallBundle: false,
+actionSlaveReboot: 'Sudo reboot слэйва',
+actionSlaveShutdownR: 'Shutdown -r now слэйва',
+actionSlaveNote: '',
+
+actionNavRestartCgn: 'Перезагрузка служб cgn* на БН',
+actionNavReinstallBundle: 'Переуставновка бандла на БН',
+actionNavReboot: 'Sudo reboot БН',
+actionNavShutdownR: 'Shutdown -r now БН',
+actionNavNote: '',
+
+actionNote: '',
+}
+const data = [
+{ field1: "row1-col1", field2: "row1-col2", field3: "row1-col3", field4: "row1-col4",field5: "row1-col5" }
+// { field1: "row2-col1", field2: "row2-col2", field3: "row2-col3" }
+// Include additional data as needed
+];
+
+const date = new Date();
+
+let processedData: any = [{
     tramNumber: '',
-    redIcons: 'Красные иконки',
-    whiteIcons: 'Белые иконки',
-    greenIcons: 'Зеленые иконки',
-    driverReport: '',
-
-    issueMasterUnavailable: 'Мастер недоступен',
-    issueMasterNpme: 'Ошибка НПМЕ',
-    issueMasterRedis: 'Ошибка redis',
-    issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
-    issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
-    issueMasterNoVideo: 'Нет видео потока на мастере',
-    issueMasterCamera: 'Проблема камеры на мастере',
-    issueMasterSelects: 'Ошибки селектов на мастере',
-    issueMasterCan: 'Нет данных по can',
-    issueMasterImu: 'Ошибки IMU',
-    issueMasterMap: 'Ошибки карты',
-    issueMasterNote: '',
-
-    issueSlaveUnavailable: 'Слэйв недоступен',
-    issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
-    issueSlaveNoVideo: 'Нет видео потока на слэйве',
-    issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
-    issueSlaveCamera: 'Проблема камеры на слэйве',
-    issueSlaveRadar: 'Ошибки радара',
-    issueSlaveSelects: 'Ошибки селектов на слэйве',
-    issueSlaveNote: '',
-
-    issueNavUnavailable: 'БН недоступен',
-    issueNavCgn: 'Ошибки служб cgn',
-    issueNavNote: '',
-
-    issueNote: '',
-
-    actionTramReboot: 'Перезагрузка трамвая',
-    actionRevpn: false,
-
-    actionMasterReVPN: 'Ревпн',
-    actionMasterRestartDocker: 'Перезагрузка докера на мастере',
-    actionMasterRestartJetHard: 'Перезагрузка jetson hardware на мастере',
-    actionMasterReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
-    actionMasterReinstallBundle: 'Переуставновка бандла на мастере',
-    actionMasterReboot: 'Sudo reboot мастера',
-    actionMasterShutdownR: 'Shutdown -r now мастера',
-    actionMasterNote: '',
-
-    actionSlaveRestartDocker: 'Перезагрузка докера на слэйве',
-    actionSlaveRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
-    actionSlaveReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
-    actionSlaveReinstallBundle: false,
-    actionSlaveReboot: 'Sudo reboot слэйва',
-    actionSlaveShutdownR: 'Shutdown -r now слэйва',
-    actionSlaveNote: '',
-
-    actionNavRestartCgn: 'Перезагрузка служб cgn* на БН',
-    actionNavReinstallBundle: 'Переуставновка бандла на БН',
-    actionNavReboot: 'Sudo reboot БН',
-    actionNavShutdownR: 'Shutdown -r now БН',
-    actionNavNote: '',
-
-    actionNote: '',
-  }
-  const data = [
-    { field1: "row1-col1", field2: "row1-col2", field3: "row1-col3" },
-    { field1: "row2-col1", field2: "row2-col2", field3: "row2-col3" }
-    // Include additional data as needed
-  ];
-
+    // driversReport: [],
+    id: '',
+    time: date.toLocaleTimeString(),
+    issue: '',
+    action: '',
+}];
 
 const Forms: React.FC = () => {
     const containerStyle: React.CSSProperties = { 
@@ -160,14 +170,12 @@ const Forms: React.FC = () => {
         color: 'white',
     };
 
-    console.log('render')
-
     const initialValues: ReportType = {
         tramNumber: '',
-        redIcons: false,
-        whiteIcons: false,
-        greenIcons: false,
-        driverReport: '',
+        driversReportRedIcons: false,
+        driversReportWhiteIcons: false,
+        driversReportGreenIcons: false,
+        driversReportNote: '',
 
         issueMasterUnavailable: false,
         issueMasterNpme: false,
@@ -231,7 +239,7 @@ const Forms: React.FC = () => {
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         console.log('Success:', report);
-        dataProcessing(report);
+        dataProcessing(report, glossary, processedData);
       };
       
     const handleClick = (section: keyof ReportType) => {
@@ -245,23 +253,56 @@ const Forms: React.FC = () => {
         // console.log(event.target.value);
     }
 
-    const dataProcessing = (report: ReportType) => {
+    const dataProcessing = (report: ReportType, glossary: any, processedData: any) => {
+        
+        const issue = 'issue';
+        const action = 'action';
+        const driversReport = 'driversReport';
+        
+        for (const [key, value] of Object.entries(report)) {
 
-        const data = [];
+            if( value === '' || value === false) {
+                continue;
+            }     
+            
+            if(key === 'tramNumber') {
+                processedData[0].tramNumber = value
+            }
 
-        for (let val of Object.entries(report)) {
+            // if(key.includes(driversReport)) {
+            //     if(value === true) {
+            //         console.log( 'push driversReport ', key)
+            //         processedData[0].driversReport = processedData[0].driversReport + glossary[key]
+            //     }
+            //     if(typeof value === 'string') {
+            //         console.log( 'push driversReport ', value);
+            //         processedData[0].driversReport = processedData[0].driversReport + value;
+            //     }
+            // }
 
-            if(typeof val[1] == 'string') {
-                console.log( val,' is string');
-                if(val[1] !== '') {
-                    data.push()
+            if(key.includes(issue)) {
+                if(value === true) {
+                    console.log( 'push issue ', key)
+                    processedData[0].issue = processedData[0].issue + glossary[key] + ', ';
+                }
+                if(typeof value === 'string') {
+                    console.log( 'push issue ', value);
+                    processedData[0].issue = processedData[0].issue + value + ', ';
                 }
             }
-            if(typeof val[1] == 'boolean') {
-                console.log( val,' is boolean');
-                
+
+            if(key.includes(action)) {
+                if(value === true) {
+                    console.log( 'push action ', key)
+                    processedData[0].action = processedData[0].action + glossary[key] + ', ';
+                }
+                if(typeof value === 'string') {
+                    console.log( 'push action ', value);
+                    processedData[0].action = processedData[0].action + value + ', ';
+                }
             }
         }
+        console.log('processedData', processedData);
     }
     
     
@@ -295,16 +336,16 @@ const Forms: React.FC = () => {
 
                     <div style={{marginTop: '10px'}}>
                         <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
-                            <Form.Item<ReportType> name="redIcons" >
-                                <CheckBtn label='Red Icons' textColor='red' onClick={() => handleClick('redIcons')}/>
+                            <Form.Item<ReportType> name="driversReportRedIcons" >
+                                <CheckBtn label='Red Icons' textColor='red' onClick={() => handleClick('driversReportRedIcons')}/>
                             </Form.Item>
-                            <Form.Item<ReportType>  name="whiteIcons" >
-                                <CheckBtn label='White Icons' onClick={() => handleClick('whiteIcons')}/>
+                            <Form.Item<ReportType>  name="driversReportWhiteIcons" >
+                                <CheckBtn label='White Icons' onClick={() => handleClick('driversReportWhiteIcons')}/>
                             </Form.Item>
-                            <Form.Item<ReportType> name="greenIcons" >
-                                <CheckBtn label='Green Icons' textColor='green' onClick={() => handleClick('greenIcons')}/>
+                            <Form.Item<ReportType> name="driversReportGreenIcons" >
+                                <CheckBtn label='Green Icons' textColor='green' onClick={() => handleClick('driversReportGreenIcons')}/>
                             </Form.Item>
-                            <Form.Item<ReportType> name="driverReport" >
+                            <Form.Item<ReportType> name="driversReportNote" >
                                 <p>
                                     <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }} onChange={(event) => handleInput(event, 'driverReport')}/>
                                 </p>
@@ -404,6 +445,7 @@ const Forms: React.FC = () => {
             </Form>
             <DownloadCSV data={report} fileName="tram_report" />
             <ExportCSV data={data} fileName="tram_report.csv" />
+            <ExportCSV data={processedData} fileName="tram_report.csv" />
         </>
         
     );

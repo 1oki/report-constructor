@@ -29,14 +29,32 @@ import * as XLSX from 'xlsx-js-style';
 // Функция экспорта в Excel с цветными строками
 const exportToExcel = (data: any) => {
   const workbook = XLSX.utils.book_new();
-  const worksheet = XLSX.utils.json_to_sheet(data);
+  const worksheet = XLSX.utils.json_to_sheet(data, {
+    header: ["tramNumber", "id", "time", "driversReport","issue", "action"],
+    skipHeader: true // Пропустить автоматическую генерацию заголовков
+  });
+
+  // const headers = ["Трамвай №", "Красные иконки", "Белые иконки", "Зеленые иконки", "Отчет водителя"];
+  // headers.forEach((header, index) => {
+  //   const cellAddress = XLSX.utils.encode_cell({ r: 0, c: index });
+  //   worksheet[cellAddress] = { v: header, s: { font: { bold: true } } }; // Стили для заголовка
+  // });
 
   // Применение стилей (в данном случае простая установка цвета фона для примера)
   const range = XLSX.utils.decode_range(worksheet['!ref']!);
+  
+  worksheet['!cols'] = [
+    { wpx: 100 },  
+    { wpx: 70 },
+    { wpx: 50 },
+    { wpx: 200 },
+    { wpx: 200 },
+    { wpx: 200 },
+  ];
   for (let r = range.s.r; r <= range.e.r; ++r) {
     for (let c = range.s.c; c <= range.e.c; ++c) {
       const cellAddress = XLSX.utils.encode_cell({ r, c });
-      // console.log('worksheet[cellAddress]', worksheet[cellAddress].r)
+      // console.log('worksheet[cellAddress].wpx', worksheet[cellAddress].wpx)
       if (!worksheet[cellAddress]) continue;
       if (r === 0 ) {
         worksheet[cellAddress].s = {
@@ -44,6 +62,10 @@ const exportToExcel = (data: any) => {
             fgColor: {
               rgb: '85BD5F'
             }
+          },
+          alignment: { 
+            horizontal: "center", 
+            vertical: "center"
           }
         }
         continue;
@@ -52,8 +74,12 @@ const exportToExcel = (data: any) => {
         fill: {
           fgColor: {
             rgb: r % 2 === 0 ? 'E2EFDA' : 'C6E0B4'
-
           }
+        },
+        alignment: { 
+          wrapText: true,
+          horizontal: "center", 
+          vertical: "center"
         }
       };
     }

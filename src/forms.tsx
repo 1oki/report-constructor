@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Flex, Input, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
 import ExportCSV from './exportCsv';
@@ -147,10 +147,18 @@ const data = [
 const date = new Date();
 
 let processedData: any = [{
+    tramNumber: 'Номер трамвая',
+    id: 'ID БВТ',
+    time: 'Время',
+    driversReport: 'Жалобы',
+    issue: 'Ошибки',
+    action: 'Предпринятые меры',
+},
+{
     tramNumber: '',
-    driversReport: '',
     id: '',
     time: date.toLocaleTimeString(),
+    driversReport: '',
     issue: '',
     action: '',
 }];
@@ -244,6 +252,8 @@ const Forms: React.FC = () => {
     }
     const handleInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, section: string) => {
         setReport(state => ({ ...state, [section]: event.target.value}))
+        // localStorage.setItem('reportData', JSON.stringify(report));
+        saveDataToLocalStorage();
     }
 
     console.log('report', report)
@@ -260,45 +270,61 @@ const Forms: React.FC = () => {
             }     
             
             if(key === 'tramNumber') {
-                processedData[0].tramNumber = value
+                processedData[1].tramNumber = value
             }
 
             if(key.includes(driversReport)) {
                 if(value === true) {
                     console.log( 'push driversReport ', key)
-                    processedData[0].driversReport = processedData[0].driversReport + glossary[key] + ', ';
+                    processedData[1].driversReport = processedData[1].driversReport + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
                     console.log( 'push driversReport ', value);
-                    processedData[0].driversReport = processedData[0].driversReport + value + ', ';
+                    processedData[1].driversReport = processedData[1].driversReport + value + ', ';
                 }
             }
 
             if(key.includes(issue)) {
                 if(value === true) {
                     // console.log( 'push issue ', key)
-                    processedData[0].issue = processedData[0].issue + glossary[key] + ', ';
+                    processedData[1].issue = processedData[1].issue + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push issue ', value);
-                    processedData[0].issue = processedData[0].issue + value + ', ';
+                    processedData[1].issue = processedData[1].issue + value + ', ';
                 }
             }
 
             if(key.includes(action)) {
                 if(value === true) {
                     // console.log( 'push action ', key)
-                    processedData[0].action = processedData[0].action + glossary[key] + ', ';
+                    processedData[1].action = processedData[1].action + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push action ', value);
-                    processedData[0].action = processedData[0].action + value + ', ';
+                    processedData[1].action = processedData[1].action + value + ', ';
                 }
             }
         }
         console.log('processedData', processedData);
     }
     
+    useEffect(() => {
+        // Чтение данных из localStorage при загрузке
+        const savedData = localStorage.getItem('reportData');
+        if (savedData) {
+            setReport(JSON.parse(savedData));
+        }
+    }, []);
+
+    const saveDataToLocalStorage = () => {
+        localStorage.setItem('reportData', JSON.stringify(report));
+    };
+
+    const clearLocalStorage = () => {
+        localStorage.removeItem('reportData');
+        setReport(initialValues); // Сброс данных на начальные
+    };
     
 
     return (

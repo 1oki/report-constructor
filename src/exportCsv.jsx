@@ -2,12 +2,11 @@ const ExportCSV = ({ data, fileName }) => {
     const downloadCSV = () => {
       // Convert the data array into a CSV string
 
-      console.log('date',data)
       const csvString = [
 
-        ["Номер", "ID БВТ", "Время", "Ошибки", "Предпринятые меры"], // Specify your headers here
+        ["Номер", "ID БВТ", "Время", "Жалобы","Ошибки", "Предпринятые меры"], // Specify your headers here
         // ...data.map(item => [item.field1, item.field2, item.field3, item.field4, item.field5]) // Map your data fields accordingly
-        ...data.map(item => [item.tramNumber, item.id, item.time, item.issue, item.action]) // Map your data fields accordingly
+        ...data.map(item => [item.tramNumber, item.id, item.time, item.driversReport, item.issue, item.action]) // Map your data fields accordingly
       ]
       .map(row => row.join(";"))
       .join("\n");

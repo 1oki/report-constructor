@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Flex, FlexProps, Input, Checkbox, Form, ConfigProvider, FormProps} from 'antd';
+import { Button, Flex, Input, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
-import DownloadCSV from './DownloadCSV';
 import ExportCSV from './exportCsv';
+import exportToExcel from './exportXlsx';
 
 
 type ReportType = {
@@ -74,8 +74,6 @@ const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
 console.log('Failed:', errorInfo);
 };
 
-const { TextArea } = Input;
-
 const glossary = {
 tramNumber: '',
 driversReportRedIcons: 'Красные иконки',
@@ -139,6 +137,7 @@ actionNavNote: '',
 
 actionNote: '',
 }
+
 const data = [
 { field1: "row1-col1", field2: "row1-col2", field3: "row1-col3", field4: "row1-col4",field5: "row1-col5" }
 // { field1: "row2-col1", field2: "row2-col2", field3: "row2-col3" }
@@ -149,7 +148,7 @@ const date = new Date();
 
 let processedData: any = [{
     tramNumber: '',
-    // driversReport: [],
+    driversReport: '',
     id: '',
     time: date.toLocaleTimeString(),
     issue: '',
@@ -235,24 +234,19 @@ const Forms: React.FC = () => {
     }
 
     const [ report, setReport ] = useState<ReportType>(initialValues)
-    // const [debouncedValue] = useDebounce(inputValue, 500);
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
-        console.log('Success:', report);
         dataProcessing(report, glossary, processedData);
       };
       
     const handleClick = (section: keyof ReportType) => {
-        // console.log('section', section)
-        // console.log('report.section', report[section])
         setReport(state => ({ ...state, [section]: !state[section]}))
-        // console.log('report.section', report[section])
     }
     const handleInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, section: string) => {
         setReport(state => ({ ...state, [section]: event.target.value}))
-        // console.log(event.target.value);
     }
 
+    console.log('report', report)
     const dataProcessing = (report: ReportType, glossary: any, processedData: any) => {
         
         const issue = 'issue';
@@ -269,35 +263,35 @@ const Forms: React.FC = () => {
                 processedData[0].tramNumber = value
             }
 
-            // if(key.includes(driversReport)) {
-            //     if(value === true) {
-            //         console.log( 'push driversReport ', key)
-            //         processedData[0].driversReport = processedData[0].driversReport + glossary[key]
-            //     }
-            //     if(typeof value === 'string') {
-            //         console.log( 'push driversReport ', value);
-            //         processedData[0].driversReport = processedData[0].driversReport + value;
-            //     }
-            // }
+            if(key.includes(driversReport)) {
+                if(value === true) {
+                    console.log( 'push driversReport ', key)
+                    processedData[0].driversReport = processedData[0].driversReport + glossary[key] + ', ';
+                }
+                if(typeof value === 'string') {
+                    console.log( 'push driversReport ', value);
+                    processedData[0].driversReport = processedData[0].driversReport + value + ', ';
+                }
+            }
 
             if(key.includes(issue)) {
                 if(value === true) {
-                    console.log( 'push issue ', key)
+                    // console.log( 'push issue ', key)
                     processedData[0].issue = processedData[0].issue + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
-                    console.log( 'push issue ', value);
+                    // console.log( 'push issue ', value);
                     processedData[0].issue = processedData[0].issue + value + ', ';
                 }
             }
 
             if(key.includes(action)) {
                 if(value === true) {
-                    console.log( 'push action ', key)
+                    // console.log( 'push action ', key)
                     processedData[0].action = processedData[0].action + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
-                    console.log( 'push action ', value);
+                    // console.log( 'push action ', value);
                     processedData[0].action = processedData[0].action + value + ', ';
                 }
             }
@@ -309,8 +303,6 @@ const Forms: React.FC = () => {
 
     return (
         <>
-            
-            
             <Form style={containerStyle}
                 name="basic"
                 // initialValues={{ remember: true }}
@@ -347,7 +339,7 @@ const Forms: React.FC = () => {
                             </Form.Item>
                             <Form.Item<ReportType> name="driversReportNote" >
                                 <p>
-                                    <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }} onChange={(event) => handleInput(event, 'driverReport')}/>
+                                    <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }} onChange={(event) => handleInput(event, 'driversReportNote')}/>
                                 </p>
                             </Form.Item>
                         </Flex>
@@ -372,7 +364,6 @@ const Forms: React.FC = () => {
                                 <CheckBtn label='Can error' onClick={() => handleClick('issueMasterCan')}/>
                                 <CheckBtn label='IMU' onClick={() => handleClick('issueMasterImu')}/>
                                 <CheckBtn label='Geomap' onClick={() => handleClick('issueMasterMap')}/>
-                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'issueMasterNote')}/>
                             </div>
                             <div style={boxStyle}> 
                                 <h1>Slave</h1>
@@ -382,17 +373,15 @@ const Forms: React.FC = () => {
                                 <CheckBtn label='No Video' onClick={() => handleClick('issueSlaveNoVideo')}/>
                                 <CheckBtn label='Radar' onClick={() => handleClick('issueSlaveRadar')}/>
                                 <CheckBtn label='Selects' onClick={() => handleClick('issueSlaveSelects')}/>
-                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'issueSlaveNote')}/>
                             </div>
                             <div style={boxStyle}> 
                                 <h1>Nav</h1>
                                 <CheckBtn label='Unavailable' onClick={() => handleClick('issueNavUnavailable')}/>
                                 <CheckBtn label='GPS' onClick={() => handleClick('issueNavCgn')}/>
-                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'issueNavNote')}/>
                             </div>
                         </Flex>
                     </Flex>
-                    <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'issueNote')}/>
+                    <Input size="large" placeholder="Notes" style={{ width: '80%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'issueNote')}/>
 
                     <div style={{marginTop: '20px'}}>
                         <h1>Actions performed</h1>
@@ -411,7 +400,7 @@ const Forms: React.FC = () => {
                                 <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionMasterReinstallBundle')}/>
                                 <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionMasterReboot')}/>
                                 <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionMasterShutdownR')}/>
-                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionMasterNote')}/>
+                                {/* <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionMasterNote')}/> */}
                                 
                             </div>
                             <div style={boxStyle}> 
@@ -422,7 +411,7 @@ const Forms: React.FC = () => {
                                 <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionSlaveReinstallBundle')}/>
                                 <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionSlaveReboot')}/>
                                 <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionSlaveShutdownR')}/>
-                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionSlaveNote')}/>
+                                {/* <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionSlaveNote')}/> */}
                             </div>
                             <div style={boxStyle}> 
                                 <h1>Nav</h1>
@@ -430,11 +419,11 @@ const Forms: React.FC = () => {
                                 <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionNavReinstallBundle')}/>
                                 <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionNavReboot')}/>
                                 <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionNavShutdownR')}/>
-                                <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNavNote')}/>
+                                {/* <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNavNote')}/> */}
                             </div>
                         </Flex>
                     </Flex>
-                    <Input size="large" placeholder="Notes" style={{ width: '94%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNote')}/>
+                    <Input size="large" placeholder="Notes" style={{ width: '80%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNote')}/>
                     <Form.Item >
                         <Button type="primary" htmlType="submit">
                             Submit
@@ -443,9 +432,10 @@ const Forms: React.FC = () => {
                 </ConfigProvider>
                 
             </Form>
-            <DownloadCSV data={report} fileName="tram_report" />
-            <ExportCSV data={data} fileName="tram_report.csv" />
             <ExportCSV data={processedData} fileName="tram_report.csv" />
+            <button onClick={exportToExcel}>
+                Export to XLS
+            </button>
         </>
         
     );

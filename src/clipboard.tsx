@@ -8,6 +8,7 @@ const Clipboard = () => {
     let connectToMaster = 'ssh agrodroid@192.168.10.208';
     let connectToSlave = 'ssh agrodroid@192.168.10.209';
     let statusCgn = "sudo systemctl status 'cgn*'";
+    let imu = "xxd /dev/ttyS5";
     let i2cdetect = "i2cdetect -y 2";
     let videostream = "ll /dev/vid* ";
     let releasesCamDrivers = "cd ~/releases/active_release/cgn_cam/drivers/  ";
@@ -53,8 +54,12 @@ const Clipboard = () => {
                 <p>
                     <button onClick={() => navigator.clipboard.writeText(navPass)}>{navPass}</button> 
                 </p>
+                <p><br/></p>
                 <p>
                     <button onClick={() => navigator.clipboard.writeText(statusCgn)}>{statusCgn}</button> 
+                </p>
+                <p>
+                    <button onClick={() => navigator.clipboard.writeText(imu)}>{imu}</button> 
                 </p>
                 
             </div>

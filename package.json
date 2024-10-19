@@ -21,7 +21,8 @@
     "use-debounce": "^10.0.3",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5",
-    "xlsx-color": "^0.14.30"
+    "xlsx-color": "^0.14.30",
+    "xlsx-js-style": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

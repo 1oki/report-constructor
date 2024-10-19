@@ -432,8 +432,8 @@ const Forms: React.FC = () => {
                 </ConfigProvider>
                 
             </Form>
-            <ExportCSV data={processedData} fileName="tram_report.csv" />
-            <button onClick={exportToExcel}>
+            {/* <ExportCSV data={processedData} fileName="tram_report.csv" /> */}
+            <button onClick={() => exportToExcel(processedData)}>
                 Export to XLS
             </button>
         </>

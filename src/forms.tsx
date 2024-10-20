@@ -146,22 +146,24 @@ const data = [
 
 const date = new Date();
 
-let processedData: any = [{
-    tramNumber: 'Номер трамвая',
-    id: 'ID БВТ',
-    time: 'Время',
-    driversReport: 'Жалобы',
-    issue: 'Ошибки',
-    action: 'Предпринятые меры',
-},
-{
-    tramNumber: '',
-    id: '',
-    time: date.toLocaleTimeString(),
-    driversReport: '',
-    issue: '',
-    action: '',
-}];
+let processedData: any = [
+    {
+        tramNumber: 'Номер трамвая',
+        id: 'ID БВТ',
+        time: 'Время',
+        driversReport: 'Жалобы',
+        issue: 'Ошибки',
+        action: 'Предпринятые меры',
+    },
+    // {
+    //     tramNumber: '',
+    //     id: '',
+    //     time: date.toLocaleTimeString(),
+    //     driversReport: '',
+    //     issue: '',
+    //     action: '',
+    // }
+];
 
 const Forms: React.FC = () => {
     const containerStyle: React.CSSProperties = { 
@@ -262,50 +264,72 @@ const Forms: React.FC = () => {
         const issue = 'issue';
         const action = 'action';
         const driversReport = 'driversReport';
+
+        const data: any = {
+            tramNumber: '',
+            id: '',
+            time: date.toLocaleTimeString(),
+            driversReport: '',
+            issue: '',
+            action: '',
+        };
+        
         
         for (const [key, value] of Object.entries(report)) {
+
+            
 
             if( value === '' || value === false) {
                 continue;
             }     
             
             if(key === 'tramNumber') {
-                processedData[1].tramNumber = value
+                // processedData[1].tramNumber = value;
+                data.tramNumber = value;
             }
 
             if(key.includes(driversReport)) {
                 if(value === true) {
                     console.log( 'push driversReport ', key)
-                    processedData[1].driversReport = processedData[1].driversReport + glossary[key] + ', ';
+                    // processedData[1].driversReport = processedData[1].driversReport + glossary[key] + ', ';
+                    data.driversReport = data.driversReport + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
                     console.log( 'push driversReport ', value);
-                    processedData[1].driversReport = processedData[1].driversReport + value + ', ';
+                    // processedData[1].driversReport = processedData[1].driversReport + value + ', ';
+                    data.driversReport = data.driversReport + value + ', ';
                 }
             }
 
             if(key.includes(issue)) {
                 if(value === true) {
                     // console.log( 'push issue ', key)
-                    processedData[1].issue = processedData[1].issue + glossary[key] + ', ';
+                    // processedData[1].issue = processedData[1].issue + glossary[key] + ', ';
+                    data.issue = data.issue + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push issue ', value);
-                    processedData[1].issue = processedData[1].issue + value + ', ';
+                    // processedData[1].issue = processedData[1].issue + value + ', ';
+                    data.issue = data.issue + value + ', ';
                 }
             }
 
             if(key.includes(action)) {
                 if(value === true) {
                     // console.log( 'push action ', key)
-                    processedData[1].action = processedData[1].action + glossary[key] + ', ';
+                    // processedData[1].action = processedData[1].action + glossary[key] + ', ';
+                    data.action = data.action + glossary[key] + ', ';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push action ', value);
-                    processedData[1].action = processedData[1].action + value + ', ';
+                    // processedData[1].action = processedData[1].action + value + ', ';
+                    data.action = data.action + value + ', ';
                 }
             }
+            console.log('data', data);
+            
         }
+        processedData.push(data);
         console.log('processedData', processedData);
     }
     
@@ -458,6 +482,9 @@ const Forms: React.FC = () => {
                 </ConfigProvider>
                 
             </Form>
+            <button onClick={clearLocalStorage}>
+                Сlear Local Storage
+            </button>
             {/* <ExportCSV data={processedData} fileName="tram_report.csv" /> */}
             <button onClick={() => exportToExcel(processedData)}>
                 Export to XLS

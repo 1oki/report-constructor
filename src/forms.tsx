@@ -3,6 +3,7 @@ import { Button, Flex, Input, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
 import ExportCSV from './exportCsv';
 import exportToExcel from './exportXlsx';
+import * as XLSX from 'xlsx';
 
 
 type ReportType = {
@@ -247,6 +248,7 @@ const Forms: React.FC = () => {
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         dataProcessing(report, glossary, processedData);
+        saveDataToLocalStorage();
       };
       
     const handleClick = (section: keyof ReportType) => {
@@ -255,10 +257,10 @@ const Forms: React.FC = () => {
     const handleInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, section: string) => {
         setReport(state => ({ ...state, [section]: event.target.value}))
         // localStorage.setItem('reportData', JSON.stringify(report));
-        saveDataToLocalStorage();
+        
     }
 
-    console.log('report', report)
+    // console.log('report', report)
     const dataProcessing = (report: ReportType, glossary: any, processedData: any) => {
         
         const issue = 'issue';
@@ -292,12 +294,12 @@ const Forms: React.FC = () => {
                 if(value === true) {
                     console.log( 'push driversReport ', key)
                     // processedData[1].driversReport = processedData[1].driversReport + glossary[key] + ', ';
-                    data.driversReport = data.driversReport + glossary[key] + ', ';
+                    data.driversReport = data.driversReport + glossary[key] + ',\n';
                 }
                 if(typeof value === 'string') {
                     console.log( 'push driversReport ', value);
                     // processedData[1].driversReport = processedData[1].driversReport + value + ', ';
-                    data.driversReport = data.driversReport + value + ', ';
+                    data.driversReport = data.driversReport + value + ',\n';
                 }
             }
 
@@ -305,12 +307,12 @@ const Forms: React.FC = () => {
                 if(value === true) {
                     // console.log( 'push issue ', key)
                     // processedData[1].issue = processedData[1].issue + glossary[key] + ', ';
-                    data.issue = data.issue + glossary[key] + ', ';
+                    data.issue = data.issue + glossary[key] + ',\n';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push issue ', value);
                     // processedData[1].issue = processedData[1].issue + value + ', ';
-                    data.issue = data.issue + value + ', ';
+                    data.issue = data.issue + value + ',\n';
                 }
             }
 
@@ -318,12 +320,12 @@ const Forms: React.FC = () => {
                 if(value === true) {
                     // console.log( 'push action ', key)
                     // processedData[1].action = processedData[1].action + glossary[key] + ', ';
-                    data.action = data.action + glossary[key] + ', ';
+                    data.action = data.action + glossary[key] + ',\n';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push action ', value);
                     // processedData[1].action = processedData[1].action + value + ', ';
-                    data.action = data.action + value + ', ';
+                    data.action = data.action + value + ',\n';
                 }
             }
             console.log('data', data);
@@ -342,11 +344,13 @@ const Forms: React.FC = () => {
     }, []);
 
     const saveDataToLocalStorage = () => {
+        console.log('saveDataToLocalStorage', saveDataToLocalStorage);
         localStorage.setItem('reportData', JSON.stringify(report));
     };
 
     const clearLocalStorage = () => {
         localStorage.removeItem('reportData');
+        console.log('clearLocalStorage', clearLocalStorage);
         setReport(initialValues); // Сброс данных на начальные
     };
     
@@ -489,10 +493,58 @@ const Forms: React.FC = () => {
             <button onClick={() => exportToExcel(processedData)}>
                 Export to XLS
             </button>
+            <EditableTable />
         </>
         
     );
     
 }
+
+
+
+const EditableTable: React.FC = () => {
+  const [data, setData] = useState<Array<any>>([
+    ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"],
+    ["001", false, false, false, "", ""],
+    ["002", false, false, false, "", ""],
+    ["003", false, false, false, "", ""],
+  ]);
+
+  const handleChange = (rowIndex: number, colIndex: number, value: string) => {
+    const newData = [...data];
+    newData[rowIndex][colIndex] = value;
+    setData(newData);
+  };
+
+  return (
+    <div>
+      <table border={1}>
+        <thead>
+          <tr>
+            {data[0].map((header: string, index: any) => (
+              <th key={index}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.slice(1).map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell: any, colIndex: any) => (
+                <td key={colIndex}>
+                  <Input
+                    value={cell}
+                    onChange={(e) => handleChange(rowIndex + 1, colIndex, e.target.value)}
+                    style={{ width: '100%' }}
+                  />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 
 export default Forms;

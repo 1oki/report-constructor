@@ -4,6 +4,7 @@ import CheckBtn from './checkBtn';
 import ExportCSV from './exportCsv';
 import exportToExcel from './exportXlsx';
 import * as XLSX from 'xlsx';
+import useReportStore from './store/useReportStore';
 
 
 type ReportType = {
@@ -167,6 +168,8 @@ let processedData: any = [
 ];
 
 const Forms: React.FC = () => {
+
+    const { readLocalStorage }  = useReportStore();
     const containerStyle: React.CSSProperties = { 
         width: '100%',
         color: 'white',
@@ -249,6 +252,7 @@ const Forms: React.FC = () => {
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         dataProcessing(report, glossary, processedData);
         saveDataToLocalStorage();
+        readLocalStorage();
       };
       
     const handleClick = (section: keyof ReportType) => {

@@ -69,7 +69,71 @@ type ReportType = {
     actionNavNote?: string,
 
     actionNote?: string,
-  };
+};
+
+const initialValues: ReportType = {
+    tramNumber: '',
+    driversReportRedIcons: false,
+    driversReportWhiteIcons: false,
+    driversReportGreenIcons: false,
+    driversReportNote: '',
+
+    issueMasterUnavailable: false,
+    issueMasterNpme: false,
+    issueMasterRedis: false,
+    issueMasterJetHard: false,
+    issueMasterDeserializer: false,
+    issueMasterNoVideo: false,
+    issueMasterCamera: false,
+    issueMasterSelects: false,
+    issueMasterCan: false,
+    issueMasterImu: false,
+    issueMasterMap: false,
+    issueMasterNote: '',
+
+    issueSlaveUnavailable: false,
+    issueSlaveJetHard: false,
+    issueSlaveNoVideo: false,
+    issueSlaveDeserializer: false,
+    issueSlaveCamera: false,
+    issueSlaveRadar: false,
+    issueSlaveSelects: false,
+    issueSlaveNote: '',
+
+    issueNavUnavailable: false,
+    issueNavCgn: false,
+    issueNavNote: '',
+
+    issueNote: '',
+
+    actionTramReboot: false,
+    actionRevpn: false,
+
+    actionMasterReVPN: false,
+    actionMasterRestartDocker: false,
+    actionMasterRestartJetHard: false,
+    actionMasterReinstallCamDriver: false,
+    actionMasterReinstallBundle: false,
+    actionMasterReboot: false,
+    actionMasterShutdownR: false,
+    actionMasterNote: '',
+
+    actionSlaveRestartDocker: false,
+    actionSlaveRestartJetHard: false,
+    actionSlaveReinstallCamDriver: false,
+    actionSlaveReinstallBundle: false,
+    actionSlaveReboot: false,
+    actionSlaveShutdownR: false,
+    actionSlaveNote: '',
+
+    actionNavRestartCgn: false,
+    actionNavReinstallBundle: false,
+    actionNavReboot: false,
+    actionNavShutdownR: false,
+    actionNavNote: '',
+
+    actionNote: '',
+}
 
 
 const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
@@ -169,12 +233,13 @@ let processedData: any = [
 
 const Forms: React.FC = () => {
 
-    const { readLocalStorage, addEntry,  }  = useReportStore();
+    const { report, addEntry,  }  = useReportStore();
+    const [ reportEntry, setReport ] = useState<ReportType>(initialValues)
+
     const containerStyle: React.CSSProperties = { 
         width: '100%',
         color: 'white',
     };
-
     const boxStyle: React.CSSProperties = { 
         width: '33%',
         minHeight: 120,
@@ -183,86 +248,20 @@ const Forms: React.FC = () => {
         color: 'white',
     };
 
-    const initialValues: ReportType = {
-        tramNumber: '',
-        driversReportRedIcons: false,
-        driversReportWhiteIcons: false,
-        driversReportGreenIcons: false,
-        driversReportNote: '',
-
-        issueMasterUnavailable: false,
-        issueMasterNpme: false,
-        issueMasterRedis: false,
-        issueMasterJetHard: false,
-        issueMasterDeserializer: false,
-        issueMasterNoVideo: false,
-        issueMasterCamera: false,
-        issueMasterSelects: false,
-        issueMasterCan: false,
-        issueMasterImu: false,
-        issueMasterMap: false,
-        issueMasterNote: '',
-
-        issueSlaveUnavailable: false,
-        issueSlaveJetHard: false,
-        issueSlaveNoVideo: false,
-        issueSlaveDeserializer: false,
-        issueSlaveCamera: false,
-        issueSlaveRadar: false,
-        issueSlaveSelects: false,
-        issueSlaveNote: '',
-
-        issueNavUnavailable: false,
-        issueNavCgn: false,
-        issueNavNote: '',
-
-        issueNote: '',
-
-        actionTramReboot: false,
-        actionRevpn: false,
-
-        actionMasterReVPN: false,
-        actionMasterRestartDocker: false,
-        actionMasterRestartJetHard: false,
-        actionMasterReinstallCamDriver: false,
-        actionMasterReinstallBundle: false,
-        actionMasterReboot: false,
-        actionMasterShutdownR: false,
-        actionMasterNote: '',
-
-        actionSlaveRestartDocker: false,
-        actionSlaveRestartJetHard: false,
-        actionSlaveReinstallCamDriver: false,
-        actionSlaveReinstallBundle: false,
-        actionSlaveReboot: false,
-        actionSlaveShutdownR: false,
-        actionSlaveNote: '',
-
-        actionNavRestartCgn: false,
-        actionNavReinstallBundle: false,
-        actionNavReboot: false,
-        actionNavShutdownR: false,
-        actionNavNote: '',
-
-        actionNote: '',
-    }
-
-    const [ report, setReport ] = useState<ReportType>(initialValues)
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
-        dataProcessing(report, glossary, processedData);
+        dataProcessing(reportEntry, glossary, processedData);
         // saveDataToLocalStorage();
-        readLocalStorage();
-        addEntry(report);
-      };
-      
+        // readLocalStorage();
+        addEntry(reportEntry);
+        console.log('report',report)
+    };
     const handleClick = (section: keyof ReportType) => {
         setReport(state => ({ ...state, [section]: !state[section]}))
     }
     const handleInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, section: string) => {
         setReport(state => ({ ...state, [section]: event.target.value}))
         // localStorage.setItem('reportData', JSON.stringify(report));
-        
     }
 
     // console.log('report', report)
@@ -333,7 +332,7 @@ const Forms: React.FC = () => {
                     data.action = data.action + value + ',\n';
                 }
             }
-            console.log('data', data);
+            // console.log('data', data);
             
         }
         processedData.push(data);
@@ -341,17 +340,13 @@ const Forms: React.FC = () => {
     }
     
     useEffect(() => {
-        // Чтение данных из localStorage при загрузке
-        const savedData = localStorage.getItem('reportData');
-        if (savedData) {
-            setReport(JSON.parse(savedData));
-        }
+        console.log('report from store', report)
     }, []);
 
-    const saveDataToLocalStorage = () => {
-        console.log('saveDataToLocalStorage', saveDataToLocalStorage);
-        localStorage.setItem('reportData', JSON.stringify(report));
-    };
+    // const saveDataToLocalStorage = () => {
+    //     console.log('saveDataToLocalStorage', saveDataToLocalStorage);
+    //     localStorage.setItem('reportData', JSON.stringify(report));
+    // };
 
     const clearLocalStorage = () => {
         localStorage.removeItem('reportData');
@@ -446,13 +441,13 @@ const Forms: React.FC = () => {
                         <h1>Actions performed</h1>
                     </div>
 
-                    <CheckBtn label={`Tram rebooted ${report.actionTramReboot} times`} onClick={() => handleClick('actionTramReboot')}/>
+                    <CheckBtn label={`Tram rebooted ${reportEntry.actionTramReboot} times`} onClick={() => handleClick('actionTramReboot')}/>
 
                     <Flex gap="middle" align="start" vertical>
                         <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
                             <div style={boxStyle}> 
                                 <h1>Master</h1>
-                                <CheckBtn label={`ReVPN ${report.actionRevpn} times`} onClick={() => handleClick('actionRevpn')}/>
+                                <CheckBtn label={`ReVPN ${reportEntry.actionRevpn} times`} onClick={() => handleClick('actionRevpn')}/>
                                 <CheckBtn label='Restart Docker' onClick={() => handleClick('actionMasterRestartDocker')}/>
                                 <CheckBtn label='Restart Jet_Hard' onClick={() => handleClick('actionMasterRestartJetHard')}/>
                                 <CheckBtn label='Cam driver reinstall' onClick={() => handleClick('actionMasterReinstallCamDriver')}/>

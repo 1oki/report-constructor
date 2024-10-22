@@ -80,46 +80,64 @@ type ReportState = {
     addEntry: (report: ReportEntryType) => void;
     editEntry: (tramNumber: string) => void;
     clearReport: () => void;
-    readLocalStorage: () => void;
+    // readLocalStorage: () => void;
     // writeToLocalStorage: () => void;
 }
 
-let initialReportValue: ReportHeaders = {
-        tramNumber: 'Номер трамвая',
-        id: 'ID БВТ',
-        time: 'Время',
-        driversReport: 'Жалобы',
-        issue: 'Ошибки',
-        action: 'Предпринятые меры',
-    }
+let initialReportValue: ReportEntryType[] = []
+// let initialReportValue: ReportHeaders = {
+//     tramNumber: 'Номер трамвая',
+//     id: 'ID БВТ',
+//     time: 'Время',
+//     driversReport: 'Жалобы',
+//     issue: 'Ошибки',
+//     action: 'Предпринятые меры',
+// }
 
-
-const useReportStore = create<ReportState>()((set, get) => ({
-    report: [initialReportValue],
-    readLocalStorage: () => {
-        console.log('readLocalStorage');
-        const localStorageState = localStorage.getItem('reportData');
-        set((state) => ({ ...state, localStorageState}));
-        // console.log('localStorageState', localStorageState);
-    },
-    // writeToLocalStorage: () => {
-    //     const { report } = get();
-    //     console.log('writeToLocalStorage');
+// const saveDataToLocalStorage = () => {
+    //     console.log('saveDataToLocalStorage', saveDataToLocalStorage);
     //     localStorage.setItem('reportData', JSON.stringify(report));
-    // },
+    // };
+
+    // const savedData = localStorage.getItem('reportData');
+    //     if (savedData) {
+    //         console.log('data in local storage', JSON.parse(savedData));
+    //         addEntry(JSON.parse(savedData))
+    //     }
+
+// Функция для сохранения состояния в localStorage
+const saveToLocalStorage = (report: ReportEntryType[]) => {
+    localStorage.setItem('reportData', JSON.stringify(report))
+};
+  
+  // Функция для чтения состояния из localStorage
+const loadFromLocalStorage = () => {
+    const savedData = localStorage.getItem('reportData');
+    return savedData ? JSON.parse(savedData) : initialReportValue;
+};
+
+const useReportStore = create<ReportState>((set, get) => ({
+    report: loadFromLocalStorage(),
     addEntry: (reportEntry: ReportEntryType) => {
-        console.log('reportEntry', reportEntry)
-        set((state) => ({ ...state, reportEntry}))
+        // console.log('reportEntry', reportEntry)
+        
         const { report } = get();
-        console.log('store report',report)
-        localStorage.setItem('reportData', JSON.stringify(report));
+        const updatedReport = [...report, reportEntry];
+        // console.log('updatedReport', updatedReport)
+        set({ report: updatedReport });
+        // localStorage.setItem('reportData', JSON.stringify(updatedReport));
+        saveToLocalStorage(updatedReport)
     },
     editEntry: (tramNumber: string) => {
-        set((state) => ({ ...state, tramNumber}))
         const { report } = get();
-        localStorage.setItem('reportData', JSON.stringify(report));
+        const updatedReport = report.map(entry => 
+            entry.tramNumber === tramNumber ? { ...entry, tramNumber } : entry
+        );
+        set({ report: updatedReport });
+        localStorage.setItem('reportData', JSON.stringify(updatedReport));
     },
     clearReport: () => {
+        set({ report: [] });
         console.log('clear report');
         console.log('clear local storage');
         localStorage.clear();

@@ -28,6 +28,10 @@ import * as XLSX from 'xlsx-js-style';
 
 // Функция экспорта в Excel с цветными строками
 const exportToExcel = (data: any) => {
+  const currentDate = new Date();
+  const dateISOString = currentDate.toISOString();
+  const dateWithoutTime = dateISOString.split('T')[0];
+
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(data, {
     header: ["tramNumber", "id", "time", "driversReport","issue", "action"],
@@ -85,8 +89,10 @@ const exportToExcel = (data: any) => {
     }
   }
 
+
+
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Report');
-  XLSX.writeFile(workbook, 'report_with_colors.xlsx');
+  XLSX.writeFile(workbook, `Отчеты по трамваям ${dateWithoutTime}.xlsx`);
 };
 
 

@@ -169,7 +169,7 @@ let processedData: any = [
 
 const Forms: React.FC = () => {
 
-    const { readLocalStorage }  = useReportStore();
+    const { readLocalStorage, addEntry,  }  = useReportStore();
     const containerStyle: React.CSSProperties = { 
         width: '100%',
         color: 'white',
@@ -251,8 +251,9 @@ const Forms: React.FC = () => {
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         dataProcessing(report, glossary, processedData);
-        saveDataToLocalStorage();
+        // saveDataToLocalStorage();
         readLocalStorage();
+        addEntry(report);
       };
       
     const handleClick = (section: keyof ReportType) => {

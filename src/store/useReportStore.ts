@@ -65,29 +65,64 @@ type ReportEntryType = {
     actionNote?: string,
 };
 
-type ReportState = {
-    report: ReportEntryType[],
-    getReport: () => void;
-    addEntry: (report: ReportEntryType) => void;
-    editEntry: (report: ReportEntryType) => void;
-    clearReport: () => void;
-    readLocalStorage: () => void;
+type ReportHeaders = {
+    tramNumber: string,
+    id: string,
+    time: string,
+    driversReport: string,
+    issue: string,
+    action: string,
 }
 
+type ReportState = {
+    report: ReportEntryType[],
+    // getReport: () => void;
+    addEntry: (report: ReportEntryType) => void;
+    editEntry: (tramNumber: string) => void;
+    clearReport: () => void;
+    readLocalStorage: () => void;
+    // writeToLocalStorage: () => void;
+}
+
+let initialReportValue: ReportHeaders = {
+        tramNumber: 'Номер трамвая',
+        id: 'ID БВТ',
+        time: 'Время',
+        driversReport: 'Жалобы',
+        issue: 'Ошибки',
+        action: 'Предпринятые меры',
+    }
+
+
 const useReportStore = create<ReportState>()((set, get) => ({
-    report: [],
+    report: [initialReportValue],
     readLocalStorage: () => {
         console.log('readLocalStorage');
         const localStorageState = localStorage.getItem('reportData');
         set((state) => ({ ...state, localStorageState}));
-        console.log('localStorageState', localStorageState);
+        // console.log('localStorageState', localStorageState);
     },
-    getReport: () => {
+    // writeToLocalStorage: () => {
+    //     const { report } = get();
+    //     console.log('writeToLocalStorage');
+    //     localStorage.setItem('reportData', JSON.stringify(report));
+    // },
+    addEntry: (reportEntry: ReportEntryType) => {
+        console.log('reportEntry', reportEntry)
+        set((state) => ({ ...state, reportEntry}))
         const { report } = get();
+        console.log('store report',report)
+        localStorage.setItem('reportData', JSON.stringify(report));
     },
-    addEntry: (reportEntry: ReportEntryType) => set((state) => ({ ...state, reportEntry})),
-    editEntry: (reportEntry: ReportEntryType) => set((state) => ({ ...state, reportEntry})),
+    editEntry: (tramNumber: string) => {
+        set((state) => ({ ...state, tramNumber}))
+        const { report } = get();
+        localStorage.setItem('reportData', JSON.stringify(report));
+    },
     clearReport: () => {
+        console.log('clear report');
+        console.log('clear local storage');
+        localStorage.clear();
     },
 })) 
 

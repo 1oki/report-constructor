@@ -491,7 +491,7 @@ const Forms: React.FC = () => {
                 Сlear Local Storage
             </button>
             {/* <ExportCSV data={processedData} fileName="tram_report.csv" /> */}
-            <button onClick={() => exportToExcel(processedData)}>
+            <button onClick={() => exportToExcel(report)}>
                 Export to XLS
             </button>
         </>

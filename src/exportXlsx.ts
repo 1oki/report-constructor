@@ -35,7 +35,7 @@ const exportToExcel = (data: any) => {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(data, {
     header: ["tramNumber", "id", "time", "driversReport","issue", "action"],
-    skipHeader: true // Пропустить автоматическую генерацию заголовков
+    // skipHeader: true // Пропустить автоматическую генерацию заголовков
   });
 
   // const headers = ["Трамвай №", "Красные иконки", "Белые иконки", "Зеленые иконки", "Отчет водителя"];

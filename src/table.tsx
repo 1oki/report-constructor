@@ -21,7 +21,11 @@ const Table: React.FC = () => {
       const newData = [...data];
       newData[rowIndex][colIndex] = value;
       setData(newData);
-    //   editEntry()
+      console.log('rowIndex', rowIndex);
+      console.log('colIndex', colIndex);
+      console.log('value', value);
+    //   report[]
+    //   editEntry(value)
     };
 
     useEffect(() => {
@@ -40,21 +44,53 @@ const Table: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {report.slice(1).map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {row.map((cell: any, colIndex: any) => (
-                  <td key={colIndex}>
-                    <Input
-                      value={cell}
-                      onChange={(e) => handleChange(rowIndex + 1, colIndex, e.target.value)}
-                      style={{ width: '100%' }}
-                    />
-                    
-                  </td>
+                {report.map((row: any, rowIndex: number) => (
+                    <tr key={rowIndex}>
+                        <td>
+                            <Input
+                                value={row.tramNumber} // предполагается, что у вас есть поле tramNumber
+                                onChange={(e) => handleChange(rowIndex, 0, e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                value={row.idBVT} // предположим, у вас есть поле idBVT
+                                onChange={(e) => handleChange(rowIndex, 1, e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                value={row.time} // предположим, у вас есть поле time
+                                onChange={(e) => handleChange(rowIndex, 2, e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                value={row.complaints} // предположим, у вас есть поле complaints
+                                onChange={(e) => handleChange(rowIndex, 3, e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                value={row.errors} // предположим, у вас есть поле errors
+                                onChange={(e) => handleChange(rowIndex, 4, e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </td>
+                        <td>
+                            <Input
+                                value={row.measures} // предположим, у вас есть поле measures
+                                onChange={(e) => handleChange(rowIndex, 5, e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </td>
+                    </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
+            </tbody>
         </table>
       </div>
     );

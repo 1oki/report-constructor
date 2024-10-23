@@ -2,6 +2,7 @@
 import './App.css';
 import Forms from './forms';
 import Clipboard from './clipboard';
+import Table from './table';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         Tram Report
       </header>
       <Forms /> 
+      <Table />
     </div>
   );
 }

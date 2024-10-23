@@ -1,90 +1,92 @@
 import { create } from 'zustand';
+import dataProcessing from '../data-processing';
+import { ReportType, DataType, ReportEntryType, ReportHeaders, ReportState } from "../types";
 
 
-type ReportEntryType = {
-    tramNumber: string,
-    driversReportRedIcons?: boolean,
-    driversReportWhiteIcons?: boolean,
-    driversReportGreenIcons?: boolean,
-    driversReportNote?: string,
+// type ReportEntryType = {
+//     tramNumber: string,
+//     driversReportRedIcons?: boolean,
+//     driversReportWhiteIcons?: boolean,
+//     driversReportGreenIcons?: boolean,
+//     driversReportNote?: string,
 
-    issueMasterUnavailable?: boolean,
-    issueMasterNpme?: boolean,
-    issueMasterRedis?: boolean,
-    issueMasterJetHard?: boolean,
-    issueMasterDeserializer?: boolean,
-    issueMasterNoVideo?: boolean,
-    issueMasterCamera?: boolean,
-    issueMasterSelects?: false,
-    issueMasterCan?: boolean,
-    issueMasterImu?: boolean,
-    issueMasterMap?: boolean,
-    issueMasterNote?: string,
+//     issueMasterUnavailable?: boolean,
+//     issueMasterNpme?: boolean,
+//     issueMasterRedis?: boolean,
+//     issueMasterJetHard?: boolean,
+//     issueMasterDeserializer?: boolean,
+//     issueMasterNoVideo?: boolean,
+//     issueMasterCamera?: boolean,
+//     issueMasterSelects?: false,
+//     issueMasterCan?: boolean,
+//     issueMasterImu?: boolean,
+//     issueMasterMap?: boolean,
+//     issueMasterNote?: string,
 
-    issueSlaveUnavailable?: boolean,
-    issueSlaveJetHard?: boolean,
-    issueSlaveNoVideo?: boolean,
-    issueSlaveDeserializer?: boolean,
-    issueSlaveCamera?: boolean,
-    issueSlaveRadar?: boolean,
-    issueSlaveSelects?: boolean,
-    issueSlaveNote?: string,
+//     issueSlaveUnavailable?: boolean,
+//     issueSlaveJetHard?: boolean,
+//     issueSlaveNoVideo?: boolean,
+//     issueSlaveDeserializer?: boolean,
+//     issueSlaveCamera?: boolean,
+//     issueSlaveRadar?: boolean,
+//     issueSlaveSelects?: boolean,
+//     issueSlaveNote?: string,
 
-    issueNavUnavailable?: boolean, 
-    issueNavCgn?: boolean,
-    issueNavNote?: string,
+//     issueNavUnavailable?: boolean, 
+//     issueNavCgn?: boolean,
+//     issueNavNote?: string,
 
-    issueNote?: string,
+//     issueNote?: string,
 
-    actionTramReboot?: boolean,
-    actionRevpn?: boolean,
+//     actionTramReboot?: boolean,
+//     actionRevpn?: boolean,
 
-    actionMasterReVPN?: boolean,
-    actionMasterRestartDocker?: boolean,
-    actionMasterRestartJetHard?: boolean,
-    actionMasterReinstallCamDriver?: boolean,
-    actionMasterReinstallBundle?: boolean,
-    actionMasterReboot?: boolean,
-    actionMasterShutdownR?: boolean,
-    actionMasterNote?: string,
+//     actionMasterReVPN?: boolean,
+//     actionMasterRestartDocker?: boolean,
+//     actionMasterRestartJetHard?: boolean,
+//     actionMasterReinstallCamDriver?: boolean,
+//     actionMasterReinstallBundle?: boolean,
+//     actionMasterReboot?: boolean,
+//     actionMasterShutdownR?: boolean,
+//     actionMasterNote?: string,
 
-    actionSlaveRestartDocker?: boolean,
-    actionSlaveRestartJetHard?: boolean,
-    actionSlaveReinstallCamDriver?: boolean,
-    actionSlaveReinstallBundle?: boolean,
-    actionSlaveReboot?: boolean,
-    actionSlaveShutdownR?: boolean,
-    actionSlaveNote?: string,
+//     actionSlaveRestartDocker?: boolean,
+//     actionSlaveRestartJetHard?: boolean,
+//     actionSlaveReinstallCamDriver?: boolean,
+//     actionSlaveReinstallBundle?: boolean,
+//     actionSlaveReboot?: boolean,
+//     actionSlaveShutdownR?: boolean,
+//     actionSlaveNote?: string,
 
-    actionNavRestartCgn?: boolean,
-    actionNavReinstallBundle?: boolean,
-    actionNavReboot?: boolean,
-    actionNavShutdownR?: boolean,
-    actionNavNote?: string,
+//     actionNavRestartCgn?: boolean,
+//     actionNavReinstallBundle?: boolean,
+//     actionNavReboot?: boolean,
+//     actionNavShutdownR?: boolean,
+//     actionNavNote?: string,
 
-    actionNote?: string,
-};
+//     actionNote?: string,
+// };
 
-type ReportHeaders = {
-    tramNumber: string,
-    id: string,
-    time: string,
-    driversReport: string,
-    issue: string,
-    action: string,
-}
+// type ReportHeaders = {
+//     tramNumber: string,
+//     id: string,
+//     time: string,
+//     driversReport: string,
+//     issue: string,
+//     action: string,
+// }
 
-type ReportState = {
-    report: ReportEntryType[],
-    // getReport: () => void;
-    addEntry: (report: ReportEntryType) => void;
-    editEntry: (tramNumber: string) => void;
-    clearReport: () => void;
-    // readLocalStorage: () => void;
-    // writeToLocalStorage: () => void;
-}
+// type ReportState = {
+//     report: ReportEntryType[],
+//     // getReport: () => void;
+//     addEntry: (reportEntry: ReportEntryType) => void;
+//     editEntry: (reportEntry: ReportEntryType) => void;
+//     clearReport: () => void;
+//     // readLocalStorage: () => void;
+//     // writeToLocalStorage: () => void;
+// }
 
-let initialReportValue: ReportEntryType[] = []
+let initialReportValue: DataType[] = []
 // let initialReportValue: ReportHeaders = {
 //     tramNumber: 'Номер трамвая',
 //     id: 'ID БВТ',
@@ -120,18 +122,22 @@ const useReportStore = create<ReportState>((set, get) => ({
     report: loadFromLocalStorage(),
     addEntry: (reportEntry: ReportEntryType) => {
         // console.log('reportEntry', reportEntry)
+        const processedData = dataProcessing(reportEntry);
         
         const { report } = get();
-        const updatedReport = [...report, reportEntry];
+        console.log('report', report);
+        console.log('processedData', processedData);
+        const updatedReport = [...report, ...processedData];
+        // const updatedReport = [...report, processedData];
         // console.log('updatedReport', updatedReport)
         set({ report: updatedReport });
         // localStorage.setItem('reportData', JSON.stringify(updatedReport));
         saveToLocalStorage(updatedReport)
     },
-    editEntry: (tramNumber: string) => {
+    editEntry: (reportEntry: ReportEntryType) => {
         const { report } = get();
         const updatedReport = report.map(entry => 
-            entry.tramNumber === tramNumber ? { ...entry, tramNumber } : entry
+            entry.tramNumber === reportEntry.tramNumber ? { ...entry, reportEntry } : entry
         );
         set({ report: updatedReport });
         localStorage.setItem('reportData', JSON.stringify(updatedReport));

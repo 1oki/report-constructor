@@ -12,7 +12,7 @@ const Clipboard = () => {
     let i2cdetect = "i2cdetect -y 2";
     let videostream = "ll /dev/vid* ";
     let releasesCamDrivers = "cd ~/releases/active_release/cgn_cam/drivers/  ";
-    let ll = 'll';
+    let ll = ' ll ';
     let rmRf = 'rm -rf ';
     let tarXzvf = 'tar xzvf ./*tar.gz ';
     let cdD3 = "cd ./d3";
@@ -123,7 +123,7 @@ const Clipboard = () => {
                     <button onClick={() => navigator.clipboard.writeText(releasesCamDrivers)}>{releasesCamDrivers}</button> 
                 </p>
                 <p>
-                    <button onClick={() => navigator.clipboard.writeText(ll)}>{ll}</button> 
+                    <button style={{width: "50px"}} onClick={() => navigator.clipboard.writeText(ll)}>ll</button> 
                 </p>
                 <p>
                     <button onClick={() => navigator.clipboard.writeText(rmRf)}>{rmRf}</button> 

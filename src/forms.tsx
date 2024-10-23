@@ -5,6 +5,7 @@ import ExportCSV from './exportCsv';
 import exportToExcel from './exportXlsx';
 import * as XLSX from 'xlsx';
 import useReportStore from './store/useReportStore';
+import Table from './table';
 
 
 type ReportType = {
@@ -140,7 +141,7 @@ const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
 console.log('Failed:', errorInfo);
 };
 
-const glossary = {
+const dictionary = {
 tramNumber: '',
 driversReportRedIcons: 'Красные иконки',
 driversReportWhiteIcons: 'Белые иконки',
@@ -250,7 +251,7 @@ const Forms: React.FC = () => {
 
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
-        dataProcessing(reportEntry, glossary, processedData);
+        // dataProcessing(reportEntry, dictionary, processedData);
         // saveDataToLocalStorage();
         // readLocalStorage();
         addEntry(reportEntry);
@@ -265,7 +266,7 @@ const Forms: React.FC = () => {
     }
 
     // console.log('report', report)
-    const dataProcessing = (report: ReportType, glossary: any, processedData: any) => {
+    const dataProcessing = (report: ReportType, dictionary: any, processedData: any) => {
         
         const issue = 'issue';
         const action = 'action';
@@ -297,8 +298,8 @@ const Forms: React.FC = () => {
             if(key.includes(driversReport)) {
                 if(value === true) {
                     console.log( 'push driversReport ', key)
-                    // processedData[1].driversReport = processedData[1].driversReport + glossary[key] + ', ';
-                    data.driversReport = data.driversReport + glossary[key] + ',\n';
+                    // processedData[1].driversReport = processedData[1].driversReport + dictionary[key] + ', ';
+                    data.driversReport = data.driversReport + dictionary[key] + ',\n';
                 }
                 if(typeof value === 'string') {
                     console.log( 'push driversReport ', value);
@@ -310,8 +311,8 @@ const Forms: React.FC = () => {
             if(key.includes(issue)) {
                 if(value === true) {
                     // console.log( 'push issue ', key)
-                    // processedData[1].issue = processedData[1].issue + glossary[key] + ', ';
-                    data.issue = data.issue + glossary[key] + ',\n';
+                    // processedData[1].issue = processedData[1].issue + dictionary[key] + ', ';
+                    data.issue = data.issue + dictionary[key] + ',\n';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push issue ', value);
@@ -323,8 +324,8 @@ const Forms: React.FC = () => {
             if(key.includes(action)) {
                 if(value === true) {
                     // console.log( 'push action ', key)
-                    // processedData[1].action = processedData[1].action + glossary[key] + ', ';
-                    data.action = data.action + glossary[key] + ',\n';
+                    // processedData[1].action = processedData[1].action + dictionary[key] + ', ';
+                    data.action = data.action + dictionary[key] + ',\n';
                 }
                 if(typeof value === 'string') {
                     // console.log( 'push action ', value);
@@ -493,7 +494,6 @@ const Forms: React.FC = () => {
             <button onClick={() => exportToExcel(processedData)}>
                 Export to XLS
             </button>
-            <EditableTable />
         </>
         
     );
@@ -505,9 +505,22 @@ const Forms: React.FC = () => {
 const EditableTable: React.FC = () => {
   const [data, setData] = useState<Array<any>>([
     ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"],
-    ["001", false, false, false, "", ""],
-    ["002", false, false, false, "", ""],
-    ["003", false, false, false, "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+
   ]);
 
   const handleChange = (rowIndex: number, colIndex: number, value: string) => {

@@ -9,6 +9,7 @@ import { DataType } from './types';
 
 
 const Table: React.FC = () => {
+    console.log('table render')
 
     const { report, editEntry }  = useReportStore();
 
@@ -24,8 +25,6 @@ const Table: React.FC = () => {
     //   newData[rowIndex][colIndex] = value;
     //   setData(newData);
       console.log('row', row);
-      console.log('rowIndex', rowIndex);
-      console.log('colIndex', colIndex);
       console.log('value', value);
     //   report[]
       editEntry(row)

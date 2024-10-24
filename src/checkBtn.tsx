@@ -13,7 +13,7 @@ interface BtnProps {
 const CheckBtn = (props: BtnProps) => {
   const [checked, setChecked] = useState(false);
 
-  const { label, textColor, bgColor, onClick } = props;
+  const { label, textColor,  onClick } = props;
 
   const toggleChecked = () => {
     setChecked(!checked);
@@ -32,7 +32,7 @@ const CheckBtn = (props: BtnProps) => {
 
   return (
       <p>
-        <Button type={btnStyle} size="large" onClick={toggleChecked} style={{color: textColor, background: bgColor}}>
+        <Button type={btnStyle} size="large" onClick={toggleChecked} style={{color: textColor}}>
           {label}
         </Button>
       </p>

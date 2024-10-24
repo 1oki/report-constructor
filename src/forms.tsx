@@ -5,8 +5,6 @@ import ExportCSV from './exportCsv';
 import exportToExcel from './exportXlsx';
 import * as XLSX from 'xlsx';
 import useReportStore from './store/useReportStore';
-import Table from './table';
-
 
 type ReportType = {
     tramNumber: string,
@@ -141,97 +139,6 @@ const onFinishFailed: FormProps<ReportType>['onFinishFailed'] = (errorInfo) => {
 console.log('Failed:', errorInfo);
 };
 
-const dictionary = {
-tramNumber: '',
-driversReportRedIcons: 'Красные иконки',
-driversReportWhiteIcons: 'Белые иконки',
-driversReportGreenIcons: 'Зеленые иконки',
-driversReportNote: '',
-
-issueMasterUnavailable: 'Мастер недоступен',
-issueMasterNpme: 'Ошибка НПМЕ',
-issueMasterRedis: 'Ошибка redis',
-issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
-issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
-issueMasterNoVideo: 'Нет видео потока на мастере',
-issueMasterCamera: 'Проблема камеры на мастере',
-issueMasterSelects: 'Ошибки селектов на мастере',
-issueMasterCan: 'Нет данных по can',
-issueMasterImu: 'Ошибки IMU',
-issueMasterMap: 'Ошибки карты',
-issueMasterNote: '',
-
-issueSlaveUnavailable: 'Слэйв недоступен',
-issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
-issueSlaveNoVideo: 'Нет видео потока на слэйве',
-issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
-issueSlaveCamera: 'Проблема камеры на слэйве',
-issueSlaveRadar: 'Ошибки радара',
-issueSlaveSelects: 'Ошибки селектов на слэйве',
-issueSlaveNote: '',
-
-issueNavUnavailable: 'БН недоступен',
-issueNavCgn: 'Ошибки служб cgn',
-issueNavNote: '',
-
-issueNote: '',
-
-actionTramReboot: 'Перезагрузка трамвая',
-actionRevpn: false,
-
-actionMasterReVPN: 'Ревпн',
-actionMasterRestartDocker: 'Перезагрузка докера на мастере',
-actionMasterRestartJetHard: 'Перезагрузка jetson hardware на мастере',
-actionMasterReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
-actionMasterReinstallBundle: 'Переуставновка бандла на мастере',
-actionMasterReboot: 'Sudo reboot мастера',
-actionMasterShutdownR: 'Shutdown -r now мастера',
-actionMasterNote: '',
-
-actionSlaveRestartDocker: 'Перезагрузка докера на слэйве',
-actionSlaveRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
-actionSlaveReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
-actionSlaveReinstallBundle: false,
-actionSlaveReboot: 'Sudo reboot слэйва',
-actionSlaveShutdownR: 'Shutdown -r now слэйва',
-actionSlaveNote: '',
-
-actionNavRestartCgn: 'Перезагрузка служб cgn* на БН',
-actionNavReinstallBundle: 'Переуставновка бандла на БН',
-actionNavReboot: 'Sudo reboot БН',
-actionNavShutdownR: 'Shutdown -r now БН',
-actionNavNote: '',
-
-actionNote: '',
-}
-
-const data = [
-{ field1: "row1-col1", field2: "row1-col2", field3: "row1-col3", field4: "row1-col4",field5: "row1-col5" }
-// { field1: "row2-col1", field2: "row2-col2", field3: "row2-col3" }
-// Include additional data as needed
-];
-
-const date = new Date();
-
-let processedData: any = [
-    {
-        tramNumber: 'Номер трамвая',
-        id: 'ID БВТ',
-        time: 'Время',
-        driversReport: 'Жалобы',
-        issue: 'Ошибки',
-        action: 'Предпринятые меры',
-    },
-    // {
-    //     tramNumber: '',
-    //     id: '',
-    //     time: date.toLocaleTimeString(),
-    //     driversReport: '',
-    //     issue: '',
-    //     action: '',
-    // }
-];
-
 const Forms: React.FC = () => {
 
     const { report, addEntry,  }  = useReportStore();
@@ -251,103 +158,22 @@ const Forms: React.FC = () => {
 
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
-        // dataProcessing(reportEntry, dictionary, processedData);
-        // saveDataToLocalStorage();
-        // readLocalStorage();
         addEntry(reportEntry);
         console.log('report',report)
     };
+
     const handleClick = (section: keyof ReportType) => {
         setReport(state => ({ ...state, [section]: !state[section]}))
+        
     }
+
     const handleInput = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, section: string) => {
         setReport(state => ({ ...state, [section]: event.target.value}))
-        // localStorage.setItem('reportData', JSON.stringify(report));
-    }
-
-    // console.log('report', report)
-    const dataProcessing = (report: ReportType, dictionary: any, processedData: any) => {
-        
-        const issue = 'issue';
-        const action = 'action';
-        const driversReport = 'driversReport';
-
-        const data: any = {
-            tramNumber: '',
-            id: '',
-            time: date.toLocaleTimeString(),
-            driversReport: '',
-            issue: '',
-            action: '',
-        };
-        
-        
-        for (const [key, value] of Object.entries(report)) {
-
-            
-
-            if( value === '' || value === false) {
-                continue;
-            }     
-            
-            if(key === 'tramNumber') {
-                // processedData[1].tramNumber = value;
-                data.tramNumber = value;
-            }
-
-            if(key.includes(driversReport)) {
-                if(value === true) {
-                    console.log( 'push driversReport ', key)
-                    // processedData[1].driversReport = processedData[1].driversReport + dictionary[key] + ', ';
-                    data.driversReport = data.driversReport + dictionary[key] + ',\n';
-                }
-                if(typeof value === 'string') {
-                    console.log( 'push driversReport ', value);
-                    // processedData[1].driversReport = processedData[1].driversReport + value + ', ';
-                    data.driversReport = data.driversReport + value + ',\n';
-                }
-            }
-
-            if(key.includes(issue)) {
-                if(value === true) {
-                    // console.log( 'push issue ', key)
-                    // processedData[1].issue = processedData[1].issue + dictionary[key] + ', ';
-                    data.issue = data.issue + dictionary[key] + ',\n';
-                }
-                if(typeof value === 'string') {
-                    // console.log( 'push issue ', value);
-                    // processedData[1].issue = processedData[1].issue + value + ', ';
-                    data.issue = data.issue + value + ',\n';
-                }
-            }
-
-            if(key.includes(action)) {
-                if(value === true) {
-                    // console.log( 'push action ', key)
-                    // processedData[1].action = processedData[1].action + dictionary[key] + ', ';
-                    data.action = data.action + dictionary[key] + ',\n';
-                }
-                if(typeof value === 'string') {
-                    // console.log( 'push action ', value);
-                    // processedData[1].action = processedData[1].action + value + ', ';
-                    data.action = data.action + value + ',\n';
-                }
-            }
-            // console.log('data', data);
-            
-        }
-        processedData.push(data);
-        console.log('processedData', processedData);
     }
     
     useEffect(() => {
         console.log('report from store', report)
     }, []);
-
-    // const saveDataToLocalStorage = () => {
-    //     console.log('saveDataToLocalStorage', saveDataToLocalStorage);
-    //     localStorage.setItem('reportData', JSON.stringify(report));
-    // };
 
     const clearLocalStorage = () => {
         localStorage.removeItem('reportData');
@@ -499,65 +325,5 @@ const Forms: React.FC = () => {
     );
     
 }
-
-
-
-const EditableTable: React.FC = () => {
-  const [data, setData] = useState<Array<any>>([
-    ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-    ["", "", "", "", "", ""],
-
-  ]);
-
-  const handleChange = (rowIndex: number, colIndex: number, value: string) => {
-    const newData = [...data];
-    newData[rowIndex][colIndex] = value;
-    setData(newData);
-  };
-
-  return (
-    <div>
-      <table border={1}>
-        <thead>
-          <tr>
-            {data[0].map((header: string, index: any) => (
-              <th key={index}>{header}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.slice(1).map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((cell: any, colIndex: any) => (
-                <td key={colIndex}>
-                  <Input
-                    value={cell}
-                    onChange={(e) => handleChange(rowIndex + 1, colIndex, e.target.value)}
-                    style={{ width: '100%' }}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
 
 export default Forms;

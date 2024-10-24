@@ -136,11 +136,16 @@ const useReportStore = create<ReportState>((set, get) => ({
     },
     editEntry: (reportEntry: ReportEntryType) => {
         const { report } = get();
+        console.log('editEntry reportEntry', reportEntry);
         const updatedReport = report.map(entry => 
             entry.tramNumber === reportEntry.tramNumber ? { ...entry, reportEntry } : entry
         );
+        console.log('editEntry updatedReport', updatedReport);
         set({ report: updatedReport });
+        // set({ report: updatedReport });
         localStorage.setItem('reportData', JSON.stringify(updatedReport));
+        
+        console.log('editEntry report', report);
     },
     clearReport: () => {
         set({ report: [] });

@@ -141,7 +141,7 @@ console.log('Failed:', errorInfo);
 
 const Forms: React.FC = () => {
 
-    const { report, addEntry,  }  = useReportStore();
+    const { report, addEntry }  = useReportStore();
     const [ reportEntry, setReport ] = useState<ReportType>(initialValues)
 
     const containerStyle: React.CSSProperties = { 
@@ -159,6 +159,7 @@ const Forms: React.FC = () => {
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         addEntry(reportEntry);
+        setReport(initialValues);
         console.log('report',report)
     };
 

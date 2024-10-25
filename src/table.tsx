@@ -10,6 +10,7 @@ import { DataType } from './types';
 
 const Table: React.FC = () => {
     const { report, editEntry, clearReport }  = useReportStore();
+    const { TextArea } = Input;
 
     const tableHeaders = ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"]
   
@@ -58,21 +59,21 @@ const Table: React.FC = () => {
                             />
                         </td>
                         <td>
-                            <Input
+                            <TextArea
                                 value={row.driversReport} // предположим, у вас есть поле complaints
                                 onChange={(e) => handleChange(row, rowIndex, 3, e.target.value, 'driversReport')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
-                            <Input
+                            <TextArea
                                 value={row.issue} // предположим, у вас есть поле errors
                                 onChange={(e) => handleChange(row, rowIndex, 4, e.target.value, 'issue')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
-                            <Input
+                            <TextArea rows={2}
                                 value={row.action} // предположим, у вас есть поле measures
                                 onChange={(e) => handleChange(row, rowIndex, 5, e.target.value, 'action')}
                                 style={{ width: '100%' }}

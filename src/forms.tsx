@@ -166,6 +166,9 @@ const Forms: React.FC = () => {
         setReport(initialValues);
         console.log('reportEntry',reportEntry)
     };
+    const clearInput = () => {
+        setReport(initialValues);
+    }
 
     const handleClick = (section: keyof ReportType) => {
         setReport(state => ({ ...state, [section]: !state[section]}))
@@ -214,7 +217,7 @@ const Forms: React.FC = () => {
                             </Form.Item>
                             <Form.Item<ReportType> name="driversReportNote" >
                                 <p>
-                                    <Input size="large" placeholder="Driver Report" style={{ width: 400, resize: 'none' }} onChange={(event) => handleInput(event, 'driversReportNote')}/>
+                                    <Input size="large" placeholder="Driver Report" value={reportEntry.driversReportNote} style={{ width: 400, resize: 'none' }} onChange={(event) => handleInput(event, 'driversReportNote')}/>
                                 </p>
                             </Form.Item>
                         </Flex>
@@ -297,7 +300,7 @@ const Forms: React.FC = () => {
                             </div>
                         </Flex>
                     </Flex>
-                    <Input size="large" placeholder="Notes" style={{ width: '80%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNote')}/>
+                    <Input size="large" placeholder="Notes" value={reportEntry.actionNote} style={{ width: '80%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNote')}/>
                     <Form.Item style={{ marginTop: '20px'}}>
                         <Button type="primary" size="large" htmlType="submit">
                             Submit
@@ -306,8 +309,11 @@ const Forms: React.FC = () => {
                 </ConfigProvider>
             </Form>
             <Button type="primary" size="large" style={{ marginBottom: '20px'}} onClick={() => exportToExcel(report)}>
-                Export to XLS
+                Export to XLSX file
             </Button>            
+            <Button danger style={{ marginLeft: '150px'}} onClick={clearInput}>
+                Сlear input
+            </Button>
         </>
         
     );

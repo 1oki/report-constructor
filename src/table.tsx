@@ -84,7 +84,7 @@ const Table: React.FC = () => {
         </table>
         </Flex>
         <Button danger style={{ marginTop: '150px', right: '0px'}} onClick={clear}>
-            Сlear 
+            Сlear All
         </Button>
       </div>
     );

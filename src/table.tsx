@@ -9,41 +9,22 @@ import { DataType } from './types';
 
 
 const Table: React.FC = () => {
-    console.log('table render')
-
     const { report, editEntry, clearReport }  = useReportStore();
 
-
-    const [data, setData] = useState<Array<any>>([
-        // ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"],
-        ["", "", "", "", "", ""],
-    ]);
     const tableHeaders = ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"]
   
     const handleChange = (row: DataType, rowIndex: number, colIndex: number, value: string, label: string) => {
-    //   const newData = [...data];
-    //   newData[rowIndex][colIndex] = value;
-    //   setData(newData);
-        console.log('row', row);
-        console.log('label', label);
-        console.log('value', value);
-    //   report[]
         const updatedData = {...row, [label] : value}
-        console.log('table handleChange updatedData', updatedData);
         editEntry(updatedData)
     };
 
     const clear = () => {
         clearReport()
-        // setReport(initialValues); 
     };
-
-    // useEffect(() => {
-
-    // },[report])
   
     return (
       <div>
+        <Flex justify={'space-around'} align={'flex-start'}>
         <table border={1}>
           <thead>
             <tr>
@@ -101,7 +82,8 @@ const Table: React.FC = () => {
                 ))}
             </tbody>
         </table>
-        <Button danger onClick={clear}>
+        </Flex>
+        <Button danger style={{ marginTop: '150px', right: '0px'}} onClick={clear}>
             Сlear 
         </Button>
       </div>

@@ -156,11 +156,15 @@ const Forms: React.FC = () => {
         color: 'white',
     };
 
+    useEffect(() => {
+        console.log('Bears updated:', reportEntry);
+        setReport(initialValues);
+      }, [report]);
 
     const onFinish: FormProps<ReportType>['onFinish'] = () => {
         addEntry(reportEntry);
         setReport(initialValues);
-        console.log('report',report)
+        console.log('reportEntry',reportEntry)
     };
 
     const handleClick = (section: keyof ReportType) => {
@@ -172,16 +176,6 @@ const Forms: React.FC = () => {
         setReport(state => ({ ...state, [section]: event.target.value}))
     }
     
-    useEffect(() => {
-        console.log('report from store', report)
-    }, []);
-
-    const clear = () => {
-        localStorage.removeItem('reportData');
-        setReport(initialValues); // Сброс данных на начальные
-    };
-    
-
     return (
         <>
             <Form style={containerStyle}
@@ -200,7 +194,7 @@ const Forms: React.FC = () => {
                     }}
                 >
                     <div style={{marginTop: '10px'}}>
-                        <Input size="large" placeholder="Tram №" style={{ width: 400, resize: 'none' }}  onChange={(event) => handleInput(event, 'tramNumber')}/>
+                        <Input size="large" placeholder="Tram №" value={reportEntry.tramNumber} style={{ width: 400, resize: 'none' }}  onChange={(event) => handleInput(event, 'tramNumber')}/>
                     </div>
 
                     <div style={{marginTop: '20px'}}>
@@ -225,7 +219,6 @@ const Forms: React.FC = () => {
                             </Form.Item>
                         </Flex>
                     </div>
-
 
                     <div style={{marginTop: '20px'}}>
                         <h1>Issues</h1>
@@ -305,21 +298,16 @@ const Forms: React.FC = () => {
                         </Flex>
                     </Flex>
                     <Input size="large" placeholder="Notes" style={{ width: '80%', resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNote')}/>
-                    <Form.Item >
-                        <Button type="primary" htmlType="submit">
+                    <Form.Item style={{ marginTop: '20px'}}>
+                        <Button type="primary" size="large" htmlType="submit">
                             Submit
                         </Button>
                     </Form.Item>
                 </ConfigProvider>
-                
             </Form>
-            {/* <button onClick={clearLocalStorage}>
-                Сlear Local Storage
-            </button> */}
-            {/* <ExportCSV data={processedData} fileName="tram_report.csv" /> */}
-            <button onClick={() => exportToExcel(report)}>
+            <Button type="primary" size="large" style={{ marginBottom: '20px'}} onClick={() => exportToExcel(report)}>
                 Export to XLS
-            </button>
+            </Button>            
         </>
         
     );

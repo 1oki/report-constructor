@@ -37,6 +37,35 @@ const loadFromLocalStorage = () => {
 
 const useReportStore = create<ReportState>((set, get) => ({
     report: loadFromLocalStorage(),
+
+    // increase: () => set((report) => {
+    //     const newBears = report + 1;
+    //     console.log('Bears increased:', newBears);
+    //     return { bears: newBears };
+    //   }),
+    // addEntry: (reportEntry: ReportEntryType) => {
+    //     // console.log('reportEntry', reportEntry)
+    //     const processedData = dataProcessing(reportEntry);
+        
+    //     const { report } = get();
+    //     // console.log('report', report);
+    //     // console.log('processedData', processedData);
+    //     const updatedReport = [...report, ...processedData];
+    //     // const updatedReport = [...report, processedData];
+    //     // console.log('updatedReport', updatedReport)
+    //     set((report) => { 
+    //         console.log('store set report', report);
+    //         const processedData = dataProcessing(reportEntry);
+    //         // const updatedReport = [...report, ...processedData];
+    //         // report: updatedReport 
+    //         return report;
+    //     });
+    //     // localStorage.setItem('reportData', JSON.stringify(updatedReport));
+    //     saveToLocalStorage(updatedReport)
+    // },
+
+
+
     addEntry: (reportEntry: ReportEntryType) => {
         // console.log('reportEntry', reportEntry)
         const processedData = dataProcessing(reportEntry);

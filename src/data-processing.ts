@@ -93,28 +93,28 @@ const dataProcessing = (report: ReportEntryType) => {
 
         if(key.includes(driversReport)) {
             if(value === true) {
-                data.driversReport = data.driversReport + dictionary[key] + ',\n';
+                data.driversReport = data.driversReport + dictionary[key] + ', \n';
             }
             if(typeof value === 'string') {
-                data.driversReport = data.driversReport + value + ',\n';
+                data.driversReport = data.driversReport + value + ', \n';
             }
         }
 
         if(key.includes(issue)) {
             if(value === true) {
-                data.issue = data.issue + dictionary[key] + ',\n';
+                data.issue = data.issue + dictionary[key] + ', \n';
             }
             if(typeof value === 'string') {
-                data.issue = data.issue + value + ',\n';
+                data.issue = data.issue + value + ', \n';
             }
         }
 
         if(key.includes(action)) {
             if(value === true) {
-                data.action = data.action + dictionary[key] + ',\n';
+                data.action = data.action + dictionary[key] + ', \n';
             }
             if(typeof value === 'string') {
-                data.action = data.action + value + ',\n';
+                data.action = data.action + value + ', \n';
             }
         }
         // console.log('data', data);

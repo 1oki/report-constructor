@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Checkbox } from 'antd';
 import type { CheckboxProps } from 'antd';
 import { ButtonType } from 'antd/es/button';
+import useReportStore from './store/useReportStore';
 
 interface BtnProps {
   label: string,
@@ -11,6 +12,8 @@ interface BtnProps {
 }
 
 const CheckBtn = (props: BtnProps) => {
+
+  const { report } = useReportStore();
   const [checked, setChecked] = useState(false);
 
   const { label, textColor,  onClick } = props;
@@ -20,10 +23,9 @@ const CheckBtn = (props: BtnProps) => {
     onClick();
   };
 
-  const onChange: CheckboxProps['onChange'] = (e) => {
-    console.log('checked = ', e.target.checked);
-    setChecked(e.target.checked);
-  };
+  useEffect(() => {
+    setChecked(false);
+  }, [report])
 
   let btnStyle: ButtonType = 'default';
   if(checked) {

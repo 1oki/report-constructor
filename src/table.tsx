@@ -11,7 +11,7 @@ import { DataType } from './types';
 const Table: React.FC = () => {
     console.log('table render')
 
-    const { report, editEntry }  = useReportStore();
+    const { report, editEntry, clearReport }  = useReportStore();
 
 
     const [data, setData] = useState<Array<any>>([
@@ -29,8 +29,13 @@ const Table: React.FC = () => {
         console.log('value', value);
     //   report[]
         const updatedData = {...row, [label] : value}
-        console.log('updatedData', updatedData);
-        editEntry(row)
+        console.log('table handleChange updatedData', updatedData);
+        editEntry(updatedData)
+    };
+
+    const clear = () => {
+        clearReport()
+        // setReport(initialValues); 
     };
 
     // useEffect(() => {
@@ -96,6 +101,9 @@ const Table: React.FC = () => {
                 ))}
             </tbody>
         </table>
+        <Button danger onClick={clear}>
+            Сlear 
+        </Button>
       </div>
     );
   };

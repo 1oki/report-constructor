@@ -3,89 +3,6 @@ import dataProcessing from '../data-processing';
 import { ReportType, DataType, ReportEntryType, ReportHeaders, ReportState } from "../types";
 
 
-// type ReportEntryType = {
-//     tramNumber: string,
-//     driversReportRedIcons?: boolean,
-//     driversReportWhiteIcons?: boolean,
-//     driversReportGreenIcons?: boolean,
-//     driversReportNote?: string,
-
-//     issueMasterUnavailable?: boolean,
-//     issueMasterNpme?: boolean,
-//     issueMasterRedis?: boolean,
-//     issueMasterJetHard?: boolean,
-//     issueMasterDeserializer?: boolean,
-//     issueMasterNoVideo?: boolean,
-//     issueMasterCamera?: boolean,
-//     issueMasterSelects?: false,
-//     issueMasterCan?: boolean,
-//     issueMasterImu?: boolean,
-//     issueMasterMap?: boolean,
-//     issueMasterNote?: string,
-
-//     issueSlaveUnavailable?: boolean,
-//     issueSlaveJetHard?: boolean,
-//     issueSlaveNoVideo?: boolean,
-//     issueSlaveDeserializer?: boolean,
-//     issueSlaveCamera?: boolean,
-//     issueSlaveRadar?: boolean,
-//     issueSlaveSelects?: boolean,
-//     issueSlaveNote?: string,
-
-//     issueNavUnavailable?: boolean, 
-//     issueNavCgn?: boolean,
-//     issueNavNote?: string,
-
-//     issueNote?: string,
-
-//     actionTramReboot?: boolean,
-//     actionRevpn?: boolean,
-
-//     actionMasterReVPN?: boolean,
-//     actionMasterRestartDocker?: boolean,
-//     actionMasterRestartJetHard?: boolean,
-//     actionMasterReinstallCamDriver?: boolean,
-//     actionMasterReinstallBundle?: boolean,
-//     actionMasterReboot?: boolean,
-//     actionMasterShutdownR?: boolean,
-//     actionMasterNote?: string,
-
-//     actionSlaveRestartDocker?: boolean,
-//     actionSlaveRestartJetHard?: boolean,
-//     actionSlaveReinstallCamDriver?: boolean,
-//     actionSlaveReinstallBundle?: boolean,
-//     actionSlaveReboot?: boolean,
-//     actionSlaveShutdownR?: boolean,
-//     actionSlaveNote?: string,
-
-//     actionNavRestartCgn?: boolean,
-//     actionNavReinstallBundle?: boolean,
-//     actionNavReboot?: boolean,
-//     actionNavShutdownR?: boolean,
-//     actionNavNote?: string,
-
-//     actionNote?: string,
-// };
-
-// type ReportHeaders = {
-//     tramNumber: string,
-//     id: string,
-//     time: string,
-//     driversReport: string,
-//     issue: string,
-//     action: string,
-// }
-
-// type ReportState = {
-//     report: ReportEntryType[],
-//     // getReport: () => void;
-//     addEntry: (reportEntry: ReportEntryType) => void;
-//     editEntry: (reportEntry: ReportEntryType) => void;
-//     clearReport: () => void;
-//     // readLocalStorage: () => void;
-//     // writeToLocalStorage: () => void;
-// }
-
 let initialReportValue: DataType[] = []
 // let initialReportValue: ReportHeaders = {
 //     tramNumber: 'Номер трамвая',
@@ -138,7 +55,7 @@ const useReportStore = create<ReportState>((set, get) => ({
         const { report } = get();
         console.log('editEntry reportEntry', reportEntry);
         const updatedReport = report.map(entry => 
-            entry.tramNumber === reportEntry.tramNumber ? { ...entry, reportEntry } : entry
+            entry.tramNumber === reportEntry.tramNumber ? { ...entry, ...reportEntry } : entry
         );
         console.log('editEntry updatedReport', updatedReport);
         set({ report: updatedReport });

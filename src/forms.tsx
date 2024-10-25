@@ -176,9 +176,8 @@ const Forms: React.FC = () => {
         console.log('report from store', report)
     }, []);
 
-    const clearLocalStorage = () => {
+    const clear = () => {
         localStorage.removeItem('reportData');
-        console.log('clearLocalStorage', clearLocalStorage);
         setReport(initialValues); // Сброс данных на начальные
     };
     
@@ -314,9 +313,9 @@ const Forms: React.FC = () => {
                 </ConfigProvider>
                 
             </Form>
-            <button onClick={clearLocalStorage}>
+            {/* <button onClick={clearLocalStorage}>
                 Сlear Local Storage
-            </button>
+            </button> */}
             {/* <ExportCSV data={processedData} fileName="tram_report.csv" /> */}
             <button onClick={() => exportToExcel(report)}>
                 Export to XLS

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Button} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Checkbox } from 'antd';
+import type { CheckboxProps } from 'antd';
 import { ButtonType } from 'antd/es/button';
 import useReportStore from './store/useReportStore';
 

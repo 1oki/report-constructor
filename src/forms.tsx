@@ -1,133 +1,135 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Flex, Input, Form, ConfigProvider, FormProps} from 'antd';
 import CheckBtn from './checkBtn';
+import ExportCSV from './exportCsv';
 import exportToExcel from './exportXlsx';
+import * as XLSX from 'xlsx';
 import useReportStore from './store/useReportStore';
 
 type ReportType = {
-    vehicleNumber: string,
+    tramNumber: string,
     driversReportRedIcons?: boolean,
     driversReportWhiteIcons?: boolean,
     driversReportGreenIcons?: boolean,
     driversReportNote?: string,
 
-    issueMainDeviceUnavailable?: boolean,
-    issueMainDeviceNpme?: boolean,
-    issueMainDeviceRedis?: boolean,
-    issueMainDeviceJetHard?: boolean,
-    issueMainDeviceDeserializer?: boolean,
-    issueMainDeviceNoVideo?: boolean,
-    issueMainDeviceCamera?: boolean,
-    issueMainDeviceSelects?: false,
-    issueMainDeviceCan?: boolean,
-    issueMainDeviceImu?: boolean,
-    issueMainDeviceMap?: boolean,
-    issueMainDeviceNote?: string,
+    issueMasterUnavailable?: boolean,
+    issueMasterNpme?: boolean,
+    issueMasterRedis?: boolean,
+    issueMasterJetHard?: boolean,
+    issueMasterDeserializer?: boolean,
+    issueMasterNoVideo?: boolean,
+    issueMasterCamera?: boolean,
+    issueMasterSelects?: false,
+    issueMasterCan?: boolean,
+    issueMasterImu?: boolean,
+    issueMasterMap?: boolean,
+    issueMasterNote?: string,
 
-    issueSecondaryDeviceUnavailable?: boolean,
-    issueSecondaryDeviceJetHard?: boolean,
-    issueSecondaryDeviceNoVideo?: boolean,
-    issueSecondaryDeviceDeserializer?: boolean,
-    issueSecondaryDeviceCamera?: boolean,
-    issueSecondaryDeviceRadar?: boolean,
-    issueSecondaryDeviceSelects?: boolean,
-    issueSecondaryDeviceNote?: string,
+    issueSlaveUnavailable?: boolean,
+    issueSlaveJetHard?: boolean,
+    issueSlaveNoVideo?: boolean,
+    issueSlaveDeserializer?: boolean,
+    issueSlaveCamera?: boolean,
+    issueSlaveRadar?: boolean,
+    issueSlaveSelects?: boolean,
+    issueSlaveNote?: string,
 
-    issueNavigationBlockUnavailable?: boolean, 
-    issueNavigationBlockCgn?: boolean,
-    issueNavigationBlockNote?: string,
+    issueNavUnavailable?: boolean, 
+    issueNavCgn?: boolean,
+    issueNavNote?: string,
 
     issueNote?: string,
 
-    actionVehicleReboot?: boolean,
+    actionTramReboot?: boolean,
     actionRevpn?: boolean,
 
-    actionMainDeviceReVPN?: boolean,
-    actionMainDeviceRestartDocker?: boolean,
-    actionMainDeviceRestartJetHard?: boolean,
-    actionMainDeviceReinstallCamDriver?: boolean,
-    actionMainDeviceReinstallBundle?: boolean,
-    actionMainDeviceReboot?: boolean,
-    actionMainDeviceShutdownR?: boolean,
-    actionMainDeviceNote?: string,
+    actionMasterReVPN?: boolean,
+    actionMasterRestartDocker?: boolean,
+    actionMasterRestartJetHard?: boolean,
+    actionMasterReinstallCamDriver?: boolean,
+    actionMasterReinstallBundle?: boolean,
+    actionMasterReboot?: boolean,
+    actionMasterShutdownR?: boolean,
+    actionMasterNote?: string,
 
-    actionSecondaryDeviceRestartDocker?: boolean,
-    actionSecondaryDeviceRestartJetHard?: boolean,
-    actionSecondaryDeviceReinstallCamDriver?: boolean,
-    actionSecondaryDeviceReinstallBundle?: boolean,
-    actionSecondaryDeviceReboot?: boolean,
-    actionSecondaryDeviceShutdownR?: boolean,
-    actionSecondaryDeviceNote?: string,
+    actionSlaveRestartDocker?: boolean,
+    actionSlaveRestartJetHard?: boolean,
+    actionSlaveReinstallCamDriver?: boolean,
+    actionSlaveReinstallBundle?: boolean,
+    actionSlaveReboot?: boolean,
+    actionSlaveShutdownR?: boolean,
+    actionSlaveNote?: string,
 
-    actionNavigationBlockRestartCgn?: boolean,
-    actionNavigationBlockReinstallBundle?: boolean,
-    actionNavigationBlockReboot?: boolean,
-    actionNavigationBlockShutdownR?: boolean,
-    actionNavigationBlockNote?: string,
+    actionNavRestartCgn?: boolean,
+    actionNavReinstallBundle?: boolean,
+    actionNavReboot?: boolean,
+    actionNavShutdownR?: boolean,
+    actionNavNote?: string,
 
     actionNote?: string,
 };
 
 const initialValues: ReportType = {
-    vehicleNumber: '',
+    tramNumber: '',
     driversReportRedIcons: false,
     driversReportWhiteIcons: false,
     driversReportGreenIcons: false,
     driversReportNote: '',
 
-    issueMainDeviceUnavailable: false,
-    issueMainDeviceNpme: false,
-    issueMainDeviceRedis: false,
-    issueMainDeviceJetHard: false,
-    issueMainDeviceDeserializer: false,
-    issueMainDeviceNoVideo: false,
-    issueMainDeviceCamera: false,
-    issueMainDeviceSelects: false,
-    issueMainDeviceCan: false,
-    issueMainDeviceImu: false,
-    issueMainDeviceMap: false,
-    issueMainDeviceNote: '',
+    issueMasterUnavailable: false,
+    issueMasterNpme: false,
+    issueMasterRedis: false,
+    issueMasterJetHard: false,
+    issueMasterDeserializer: false,
+    issueMasterNoVideo: false,
+    issueMasterCamera: false,
+    issueMasterSelects: false,
+    issueMasterCan: false,
+    issueMasterImu: false,
+    issueMasterMap: false,
+    issueMasterNote: '',
 
-    issueSecondaryDeviceUnavailable: false,
-    issueSecondaryDeviceJetHard: false,
-    issueSecondaryDeviceNoVideo: false,
-    issueSecondaryDeviceDeserializer: false,
-    issueSecondaryDeviceCamera: false,
-    issueSecondaryDeviceRadar: false,
-    issueSecondaryDeviceSelects: false,
-    issueSecondaryDeviceNote: '',
+    issueSlaveUnavailable: false,
+    issueSlaveJetHard: false,
+    issueSlaveNoVideo: false,
+    issueSlaveDeserializer: false,
+    issueSlaveCamera: false,
+    issueSlaveRadar: false,
+    issueSlaveSelects: false,
+    issueSlaveNote: '',
 
-    issueNavigationBlockUnavailable: false,
-    issueNavigationBlockCgn: false,
-    issueNavigationBlockNote: '',
+    issueNavUnavailable: false,
+    issueNavCgn: false,
+    issueNavNote: '',
 
     issueNote: '',
 
-    actionVehicleReboot: false,
+    actionTramReboot: false,
     actionRevpn: false,
 
-    actionMainDeviceReVPN: false,
-    actionMainDeviceRestartDocker: false,
-    actionMainDeviceRestartJetHard: false,
-    actionMainDeviceReinstallCamDriver: false,
-    actionMainDeviceReinstallBundle: false,
-    actionMainDeviceReboot: false,
-    actionMainDeviceShutdownR: false,
-    actionMainDeviceNote: '',
+    actionMasterReVPN: false,
+    actionMasterRestartDocker: false,
+    actionMasterRestartJetHard: false,
+    actionMasterReinstallCamDriver: false,
+    actionMasterReinstallBundle: false,
+    actionMasterReboot: false,
+    actionMasterShutdownR: false,
+    actionMasterNote: '',
 
-    actionSecondaryDeviceRestartDocker: false,
-    actionSecondaryDeviceRestartJetHard: false,
-    actionSecondaryDeviceReinstallCamDriver: false,
-    actionSecondaryDeviceReinstallBundle: false,
-    actionSecondaryDeviceReboot: false,
-    actionSecondaryDeviceShutdownR: false,
-    actionSecondaryDeviceNote: '',
+    actionSlaveRestartDocker: false,
+    actionSlaveRestartJetHard: false,
+    actionSlaveReinstallCamDriver: false,
+    actionSlaveReinstallBundle: false,
+    actionSlaveReboot: false,
+    actionSlaveShutdownR: false,
+    actionSlaveNote: '',
 
-    actionNavigationBlockRestartCgn: false,
-    actionNavigationBlockReinstallBundle: false,
-    actionNavigationBlockReboot: false,
-    actionNavigationBlockShutdownR: false,
-    actionNavigationBlockNote: '',
+    actionNavRestartCgn: false,
+    actionNavReinstallBundle: false,
+    actionNavReboot: false,
+    actionNavShutdownR: false,
+    actionNavNote: '',
 
     actionNote: '',
 }
@@ -150,6 +152,7 @@ const Forms: React.FC = () => {
         width: '33%',
         minHeight: 120,
         borderRadius: 6,
+        // border: '1px solid #777',
         color: 'white',
     };
 
@@ -180,6 +183,7 @@ const Forms: React.FC = () => {
         <>
             <Form style={containerStyle}
                 name="basic"
+                // initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
@@ -187,12 +191,13 @@ const Forms: React.FC = () => {
                 <ConfigProvider
                     theme={{
                     token: {
+                        // Seed Token
                         colorPrimary: 'orange',
                     },
                     }}
                 >
                     <div style={{marginTop: '10px'}}>
-                        <Input size="large" placeholder="Vehicle №" value={reportEntry.vehicleNumber} style={{ width: 400, resize: 'none' }}  onChange={(event) => handleInput(event, 'vehicleNumber')}/>
+                        <Input size="large" placeholder="Tram №" value={reportEntry.tramNumber} style={{ width: 400, resize: 'none' }}  onChange={(event) => handleInput(event, 'tramNumber')}/>
                     </div>
 
                     <div style={{marginTop: '20px'}}>
@@ -225,31 +230,31 @@ const Forms: React.FC = () => {
                     <Flex gap="middle" align="start" vertical>
                         <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
                             <div style={boxStyle}> 
-                                <h1>MainDevice</h1>
-                                <CheckBtn label='Unavailable' onClick={() => handleClick('issueMainDeviceUnavailable')}/>
-                                <CheckBtn label='Npme' onClick={() => handleClick('issueMainDeviceNpme')}/>
-                                <CheckBtn label='Redis' onClick={() => handleClick('issueMainDeviceRedis')}/>
-                                <CheckBtn label='Jet_Hard' onClick={() => handleClick('issueMainDeviceJetHard')}/>
-                                <CheckBtn label='Deserializer' onClick={() => handleClick('issueMainDeviceDeserializer')}/>
-                                <CheckBtn label='No Video' onClick={() => handleClick('issueMainDeviceNoVideo')}/>
-                                <CheckBtn label='Camera error' onClick={() => handleClick('issueMainDeviceCamera')}/>
-                                <CheckBtn label='No Can messages' onClick={() => handleClick('issueMainDeviceCan')}/>
-                                <CheckBtn label='IMU' onClick={() => handleClick('issueMainDeviceImu')}/>
-                                <CheckBtn label='Geomap' onClick={() => handleClick('issueMainDeviceMap')}/>
+                                <h1>Master</h1>
+                                <CheckBtn label='Unavailable' onClick={() => handleClick('issueMasterUnavailable')}/>
+                                <CheckBtn label='Npme' onClick={() => handleClick('issueMasterNpme')}/>
+                                <CheckBtn label='Redis' onClick={() => handleClick('issueMasterRedis')}/>
+                                <CheckBtn label='Jet_Hard' onClick={() => handleClick('issueMasterJetHard')}/>
+                                <CheckBtn label='Deserializer' onClick={() => handleClick('issueMasterDeserializer')}/>
+                                <CheckBtn label='No Video' onClick={() => handleClick('issueMasterNoVideo')}/>
+                                <CheckBtn label='Camera error' onClick={() => handleClick('issueMasterCamera')}/>
+                                <CheckBtn label='No Can messages' onClick={() => handleClick('issueMasterCan')}/>
+                                <CheckBtn label='IMU' onClick={() => handleClick('issueMasterImu')}/>
+                                <CheckBtn label='Geomap' onClick={() => handleClick('issueMasterMap')}/>
                             </div>
                             <div style={boxStyle}> 
-                                <h1>SecondaryDevice</h1>
-                                <CheckBtn label='Unavailable' onClick={() => handleClick('issueSecondaryDeviceUnavailable')}/>
-                                <CheckBtn label='Jet_Hard' onClick={() => handleClick('issueSecondaryDeviceJetHard')}/>
-                                <CheckBtn label='Deserializer' onClick={() => handleClick('issueSecondaryDeviceDeserializer')}/>
-                                <CheckBtn label='No Video' onClick={() => handleClick('issueSecondaryDeviceNoVideo')}/>
-                                <CheckBtn label='Radar' onClick={() => handleClick('issueSecondaryDeviceRadar')}/>
-                                <CheckBtn label='Selects' onClick={() => handleClick('issueSecondaryDeviceSelects')}/>
+                                <h1>Slave</h1>
+                                <CheckBtn label='Unavailable' onClick={() => handleClick('issueSlaveUnavailable')}/>
+                                <CheckBtn label='Jet_Hard' onClick={() => handleClick('issueSlaveJetHard')}/>
+                                <CheckBtn label='Deserializer' onClick={() => handleClick('issueSlaveDeserializer')}/>
+                                <CheckBtn label='No Video' onClick={() => handleClick('issueSlaveNoVideo')}/>
+                                <CheckBtn label='Radar' onClick={() => handleClick('issueSlaveRadar')}/>
+                                <CheckBtn label='Selects' onClick={() => handleClick('issueSlaveSelects')}/>
                             </div>
                             <div style={boxStyle}> 
-                                <h1>NavigationBlock</h1>
-                                <CheckBtn label='Unavailable' onClick={() => handleClick('issueNavigationBlockUnavailable')}/>
-                                <CheckBtn label='GPS' onClick={() => handleClick('issueNavigationBlockCgn')}/>
+                                <h1>Nav</h1>
+                                <CheckBtn label='Unavailable' onClick={() => handleClick('issueNavUnavailable')}/>
+                                <CheckBtn label='GPS' onClick={() => handleClick('issueNavCgn')}/>
                             </div>
                         </Flex>
                     </Flex>
@@ -259,35 +264,39 @@ const Forms: React.FC = () => {
                         <h1>Actions performed</h1>
                     </div>
 
-                    <CheckBtn label={`Tram rebooted ${reportEntry.actionVehicleReboot} times`} onClick={() => handleClick('actionVehicleReboot')}/>
+                    <CheckBtn label={`Tram rebooted ${reportEntry.actionTramReboot} times`} onClick={() => handleClick('actionTramReboot')}/>
 
                     <Flex gap="middle" align="start" vertical>
                         <Flex style={containerStyle} justify={'space-around'} align={'flex-start'}>
                             <div style={boxStyle}> 
-                                <h1>MainDevice</h1>
+                                <h1>Master</h1>
                                 <CheckBtn label={`ReVPN ${reportEntry.actionRevpn} times`} onClick={() => handleClick('actionRevpn')}/>
-                                <CheckBtn label='Restart Docker' onClick={() => handleClick('actionMainDeviceRestartDocker')}/>
-                                <CheckBtn label='Restart Jet_Hard' onClick={() => handleClick('actionMainDeviceRestartJetHard')}/>
-                                <CheckBtn label='Cam driver reinstall' onClick={() => handleClick('actionMainDeviceReinstallCamDriver')}/>
-                                <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionMainDeviceReinstallBundle')}/>
-                                <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionMainDeviceReboot')}/>
-                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionMainDeviceShutdownR')}/>
+                                <CheckBtn label='Restart Docker' onClick={() => handleClick('actionMasterRestartDocker')}/>
+                                <CheckBtn label='Restart Jet_Hard' onClick={() => handleClick('actionMasterRestartJetHard')}/>
+                                <CheckBtn label='Cam driver reinstall' onClick={() => handleClick('actionMasterReinstallCamDriver')}/>
+                                <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionMasterReinstallBundle')}/>
+                                <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionMasterReboot')}/>
+                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionMasterShutdownR')}/>
+                                {/* <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionMasterNote')}/> */}
+                                
                             </div>
                             <div style={boxStyle}> 
-                                <h1>SecondaryDevice</h1>                       
-                                <CheckBtn label='Restart Docker' onClick={() => handleClick('actionSecondaryDeviceRestartDocker')}/>
-                                <CheckBtn label='Restart Jet_Hard' onClick={() => handleClick('actionSecondaryDeviceRestartJetHard')}/>
-                                <CheckBtn label='Cam driver reinstall' onClick={() => handleClick('actionSecondaryDeviceReinstallCamDriver')}/>
-                                <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionSecondaryDeviceReinstallBundle')}/>
-                                <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionSecondaryDeviceReboot')}/>
-                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionSecondaryDeviceShutdownR')}/>
+                                <h1>Slave</h1>                       
+                                <CheckBtn label='Restart Docker' onClick={() => handleClick('actionSlaveRestartDocker')}/>
+                                <CheckBtn label='Restart Jet_Hard' onClick={() => handleClick('actionSlaveRestartJetHard')}/>
+                                <CheckBtn label='Cam driver reinstall' onClick={() => handleClick('actionSlaveReinstallCamDriver')}/>
+                                <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionSlaveReinstallBundle')}/>
+                                <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionSlaveReboot')}/>
+                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionSlaveShutdownR')}/>
+                                {/* <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionSlaveNote')}/> */}
                             </div>
                             <div style={boxStyle}> 
-                                <h1>NavigationBlock</h1>
-                                <CheckBtn label='Restart cgn*' onClick={() => handleClick('actionNavigationBlockRestartCgn')}/>
-                                <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionNavigationBlockReinstallBundle')}/>
-                                <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionNavigationBlockReboot')}/>
-                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionNavigationBlockShutdownR')}/>
+                                <h1>Nav</h1>
+                                <CheckBtn label='Restart cgn*' onClick={() => handleClick('actionNavRestartCgn')}/>
+                                <CheckBtn label='Bundle reinstall' onClick={() => handleClick('actionNavReinstallBundle')}/>
+                                <CheckBtn label='Sudo Reboot' onClick={() => handleClick('actionNavReboot')}/>
+                                <CheckBtn label='Sudo Shutdown -r now' onClick={() => handleClick('actionNavShutdownR')}/>
+                                {/* <TextArea size="large" placeholder="Notes" style={{ width: 300, resize: 'none', marginTop: '10px'}} onChange={(event) => handleInput(event, 'actionNavNote')}/> */}
                             </div>
                         </Flex>
                     </Flex>
@@ -308,7 +317,9 @@ const Forms: React.FC = () => {
                 </Button>
             </Flex>
         </>
+        
     );
+    
 }
 
 export default Forms;

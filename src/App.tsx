@@ -1,13 +1,15 @@
 
 import './App.css';
 import Forms from './forms';
+import Clipboard from './clipboard';
 import Table from './table';
 
 function App() {
   return (
     <div className="App">
+      <Clipboard />
       <header className="App-header">
-        Report constructor
+        Tram Report
       </header>
       <Forms /> 
       <Table />

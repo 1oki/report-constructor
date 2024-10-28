@@ -5,7 +5,7 @@ import { ReportType, DataType, ReportEntryType, ReportHeaders, ReportState } fro
 
 let initialReportValue: DataType[] = []
 // let initialReportValue: ReportHeaders = {
-//     tramNumber: 'Номер трамвая',
+//     vehicleNumber: 'Номер трамвая',
 //     id: 'ID БВТ',
 //     time: 'Время',
 //     driversReport: 'Жалобы',
@@ -84,7 +84,7 @@ const useReportStore = create<ReportState>((set, get) => ({
         const { report } = get();
         console.log('editEntry reportEntry', reportEntry);
         const updatedReport = report.map(entry => 
-            entry.tramNumber === reportEntry.tramNumber ? { ...entry, ...reportEntry } : entry
+            entry.vehicleNumber === reportEntry.vehicleNumber ? { ...entry, ...reportEntry } : entry
         );
         console.log('editEntry updatedReport', updatedReport);
         set({ report: updatedReport });

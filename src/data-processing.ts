@@ -5,65 +5,65 @@ import { ReportType, DataType, ReportEntryType } from "./types";
 const dataProcessing = (report: ReportEntryType) => {
         
     const dictionary: any = {
-        tramNumber: '',
+        vehicleNumber: '',
         driversReportRedIcons: 'Красные иконки',
         driversReportWhiteIcons: 'Белые иконки',
         driversReportGreenIcons: 'Зеленые иконки',
         driversReportNote: '',
         
-        issueMasterUnavailable: 'Мастер недоступен',
-        issueMasterNpme: 'Ошибка НПМЕ',
-        issueMasterRedis: 'Ошибка redis',
-        issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
-        issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
-        issueMasterNoVideo: 'Нет видео потока на мастере',
-        issueMasterCamera: 'Проблема камеры на мастере',
-        issueMasterSelects: 'Ошибки селектов на мастере',
-        issueMasterCan: 'Нет данных по can',
-        issueMasterImu: 'Ошибки IMU',
-        issueMasterMap: 'Ошибки карты',
-        issueMasterNote: '',
+        issueMainDeviceUnavailable: 'Мастер недоступен',
+        issueMainDeviceNpme: 'Ошибка НПМЕ',
+        issueMainDeviceRedis: 'Ошибка redis',
+        issueMainDeviceJetHard: 'Ошибки jetson_hardware на мастере',
+        issueMainDeviceDeserializer: 'Ошибка десериалайзера на мастере',
+        issueMainDeviceNoVideo: 'Нет видео потока на мастере',
+        issueMainDeviceCamera: 'Проблема камеры на мастере',
+        issueMainDeviceSelects: 'Ошибки селектов на мастере',
+        issueMainDeviceCan: 'Нет данных по can',
+        issueMainDeviceImu: 'Ошибки IMU',
+        issueMainDeviceMap: 'Ошибки карты',
+        issueMainDeviceNote: '',
         
-        issueSlaveUnavailable: 'Слэйв недоступен',
-        issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
-        issueSlaveNoVideo: 'Нет видео потока на слэйве',
-        issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
-        issueSlaveCamera: 'Проблема камеры на слэйве',
-        issueSlaveRadar: 'Ошибки радара',
-        issueSlaveSelects: 'Ошибки селектов на слэйве',
-        issueSlaveNote: '',
+        issueSecondaryDeviceUnavailable: 'Слэйв недоступен',
+        issueSecondaryDeviceJetHard: 'Ошибки jetson_hardware на слэйве',
+        issueSecondaryDeviceNoVideo: 'Нет видео потока на слэйве',
+        issueSecondaryDeviceDeserializer: 'Ошибка десериалайзера на слэйве',
+        issueSecondaryDeviceCamera: 'Проблема камеры на слэйве',
+        issueSecondaryDeviceRadar: 'Ошибки радара',
+        issueSecondaryDeviceSelects: 'Ошибки селектов на слэйве',
+        issueSecondaryDeviceNote: '',
         
-        issueNavUnavailable: 'БН недоступен',
-        issueNavCgn: 'Ошибки служб cgn',
-        issueNavNote: '',
+        issueNavigationBlockUnavailable: 'БН недоступен',
+        issueNavigationBlockCgn: 'Ошибки служб cgn',
+        issueNavigationBlockNote: '',
         
         issueNote: '',
         
-        actionTramReboot: 'Перезагрузка трамвая',
+        actionVehicleReboot: 'Перезагрузка трамвая',
         actionRevpn: false,
         
-        actionMasterReVPN: 'Ревпн',
-        actionMasterRestartDocker: 'Перезагрузка докера на мастере',
-        actionMasterRestartJetHard: 'Перезагрузка jetson hardware на мастере',
-        actionMasterReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
-        actionMasterReinstallBundle: 'Переуставновка бандла на мастере',
-        actionMasterReboot: 'Sudo reboot мастера',
-        actionMasterShutdownR: 'Shutdown -r now мастера',
-        actionMasterNote: '',
+        actionMainDeviceReVPN: 'Ревпн',
+        actionMainDeviceRestartDocker: 'Перезагрузка докера на мастере',
+        actionMainDeviceRestartJetHard: 'Перезагрузка jetson hardware на мастере',
+        actionMainDeviceReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
+        actionMainDeviceReinstallBundle: 'Переуставновка бандла на мастере',
+        actionMainDeviceReboot: 'Sudo reboot мастера',
+        actionMainDeviceShutdownR: 'Shutdown -r now мастера',
+        actionMainDeviceNote: '',
         
-        actionSlaveRestartDocker: 'Перезагрузка докера на слэйве',
-        actionSlaveRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
-        actionSlaveReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
-        actionSlaveReinstallBundle: false,
-        actionSlaveReboot: 'Sudo reboot слэйва',
-        actionSlaveShutdownR: 'Shutdown -r now слэйва',
-        actionSlaveNote: '',
+        actionSecondaryDeviceRestartDocker: 'Перезагрузка докера на слэйве',
+        actionSecondaryDeviceRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
+        actionSecondaryDeviceReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
+        actionSecondaryDeviceReinstallBundle: false,
+        actionSecondaryDeviceReboot: 'Sudo reboot слэйва',
+        actionSecondaryDeviceShutdownR: 'Shutdown -r now слэйва',
+        actionSecondaryDeviceNote: '',
         
-        actionNavRestartCgn: 'Перезагрузка служб cgn* на БН',
-        actionNavReinstallBundle: 'Переуставновка бандла на БН',
-        actionNavReboot: 'Sudo reboot БН',
-        actionNavShutdownR: 'Shutdown -r now БН',
-        actionNavNote: '',
+        actionNavigationBlockRestartCgn: 'Перезагрузка служб cgn* на БН',
+        actionNavigationBlockReinstallBundle: 'Переуставновка бандла на БН',
+        actionNavigationBlockReboot: 'Sudo reboot БН',
+        actionNavigationBlockShutdownR: 'Shutdown -r now БН',
+        actionNavigationBlockNote: '',
         
         actionNote: '',
     }
@@ -74,7 +74,7 @@ const dataProcessing = (report: ReportEntryType) => {
     const processedData = [];
 
     const data: DataType = {
-        tramNumber: '',
+        vehicleNumber: '',
         id: '',
         time: date.toLocaleTimeString(),
         driversReport: '',
@@ -87,8 +87,8 @@ const dataProcessing = (report: ReportEntryType) => {
             continue;
         }     
         
-        if(key === 'tramNumber' && typeof(value) != "boolean") {
-            data.tramNumber = value;
+        if(key === 'vehicleNumber' && typeof(value) != "boolean") {
+            data.vehicleNumber = value;
         }
 
         if(key.includes(driversReport)) {

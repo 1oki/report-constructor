@@ -238,7 +238,7 @@ const Forms: React.FC = () => {
                                 <CheckBtn label='Deserializer' onClick={() => handleClick('issueMasterDeserializer')}/>
                                 <CheckBtn label='No Video' onClick={() => handleClick('issueMasterNoVideo')}/>
                                 <CheckBtn label='Camera error' onClick={() => handleClick('issueMasterCamera')}/>
-                                <CheckBtn label='Can error' onClick={() => handleClick('issueMasterCan')}/>
+                                <CheckBtn label='No Can messages' onClick={() => handleClick('issueMasterCan')}/>
                                 <CheckBtn label='IMU' onClick={() => handleClick('issueMasterImu')}/>
                                 <CheckBtn label='Geomap' onClick={() => handleClick('issueMasterMap')}/>
                             </div>
@@ -308,12 +308,14 @@ const Forms: React.FC = () => {
                     </Form.Item>
                 </ConfigProvider>
             </Form>
-            <Button type="primary" size="large" style={{ marginBottom: '20px'}} onClick={() => exportToExcel(report)}>
-                Export to XLSX file
-            </Button>            
-            <Button danger style={{ marginLeft: '150px'}} onClick={clearInput}>
-                Сlear input
-            </Button>
+            <Flex style={containerStyle} justify={'space-between'} align={'flex-start'}>
+                <Button type="primary" size="large" style={{ marginBottom: '20px'}} onClick={() => exportToExcel(report)}>
+                    Export to XLSX file
+                </Button>            
+                <Button danger style={{ marginLeft: '150px'}} onClick={clearInput}>
+                    Сlear input
+                </Button>
+            </Flex>
         </>
         
     );

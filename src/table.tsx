@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Flex, Input, Form, ConfigProvider, FormProps} from 'antd';
-import CheckBtn from './checkBtn';
-import ExportCSV from './exportCsv';
-import exportToExcel from './exportXlsx';
-import * as XLSX from 'xlsx';
+import React from 'react';
+import { Button, Flex, Input} from 'antd';
 import useReportStore from './store/useReportStore';
 import { DataType } from './types';
 
@@ -12,7 +8,7 @@ const Table: React.FC = () => {
     const { report, editEntry, clearReport }  = useReportStore();
     const { TextArea } = Input;
 
-    const tableHeaders = ["Номер трамвая", "ID БВТ", "Время", "Жалобы", "Ошибки", "Предпринятые меры"]
+    const tableHeaders = ["Number", "ID", "Time", "Complaints", "Issues", "Actions performed"]
   
     const handleChange = (row: DataType, rowIndex: number, colIndex: number, value: string, label: string) => {
         const updatedData = {...row, [label] : value}
@@ -39,42 +35,42 @@ const Table: React.FC = () => {
                     <tr key={rowIndex}>
                         <td>
                             <Input 
-                                value={row.tramNumber} // предполагается, что у вас есть поле tramNumber
-                                onChange={(e) => handleChange(row, rowIndex, 0, e.target.value, 'tramNumber')}
+                                value={row.vehicleNumber} 
+                                onChange={(e) => handleChange(row, rowIndex, 0, e.target.value, 'vehicleNumber')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
                             <Input 
-                                value={row.id} // предположим, у вас есть поле idBVT
+                                value={row.id} 
                                 onChange={(e) => handleChange(row, rowIndex, 1, e.target.value, 'id')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
                             <Input
-                                value={row.time} // предположим, у вас есть поле time
+                                value={row.time} 
                                 onChange={(e) => handleChange(row, rowIndex, 2, e.target.value, 'time')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
                             <TextArea
-                                value={row.driversReport} // предположим, у вас есть поле complaints
+                                value={row.driversReport} 
                                 onChange={(e) => handleChange(row, rowIndex, 3, e.target.value, 'driversReport')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
                             <TextArea
-                                value={row.issue} // предположим, у вас есть поле errors
+                                value={row.issue} 
                                 onChange={(e) => handleChange(row, rowIndex, 4, e.target.value, 'issue')}
                                 style={{ width: '100%' }}
                             />
                         </td>
                         <td>
                             <TextArea rows={2}
-                                value={row.action} // предположим, у вас есть поле measures
+                                value={row.action} 
                                 onChange={(e) => handleChange(row, rowIndex, 5, e.target.value, 'action')}
                                 style={{ width: '100%' }}
                             />

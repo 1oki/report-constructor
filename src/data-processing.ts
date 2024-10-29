@@ -1,69 +1,68 @@
-import { ReportType, DataType, ReportEntryType } from "./types";
+import { DataType, ReportEntryType } from "./types";
 
 
 
 const dataProcessing = (report: ReportEntryType) => {
         
     const dictionary: any = {
-        tramNumber: '',
-        driversReportRedIcons: 'Красные иконки',
-        driversReportWhiteIcons: 'Белые иконки',
-        driversReportGreenIcons: 'Зеленые иконки',
+        vehicleNumber: '',
+        driversReportRedIcons: 'Red Icons',
+        driversReportWhiteIcons: 'White Icons',
+        driversReportGreenIcons: 'Green Icons',
         driversReportNote: '',
         
-        issueMasterUnavailable: 'Мастер недоступен',
-        issueMasterNpme: 'Ошибка НПМЕ',
-        issueMasterRedis: 'Ошибка redis',
-        issueMasterJetHard: 'Ошибки jetson_hardware на мастере',
-        issueMasterDeserializer: 'Ошибка десериалайзера на мастере',
-        issueMasterNoVideo: 'Нет видео потока на мастере',
-        issueMasterCamera: 'Проблема камеры на мастере',
-        issueMasterSelects: 'Ошибки селектов на мастере',
-        issueMasterCan: 'Нет данных по can',
-        issueMasterImu: 'Ошибки IMU',
-        issueMasterMap: 'Ошибки карты',
-        issueMasterNote: '',
+        issueMainDeviceUnavailable: 'MainDevice Unavailable',
+        issueMainDeviceN1: 'MainDeviceN1 error',
+        issueMainDeviceR1: 'Ошибка redis error',
+        issueMainDeviceJ1: 'MainDeviceJ1 error',
+        issueMainDeviceD1: 'MainDeviceD1 error',
+        issueMainDeviceNoVideo: 'MainDeviceNoVideo error',
+        issueMainDeviceCamera: 'MainDeviceCamera error',
+        issueMainDeviceS1: 'MainDeviceS1 error',
+        issueMainDeviceCan: 'MainDeviceCan error',
+        issueMainDeviceI1: 'MainDeviceI1 error',
+        issueMainDeviceMap: 'Map error',
+        issueMainDeviceNote: '',
         
-        issueSlaveUnavailable: 'Слэйв недоступен',
-        issueSlaveJetHard: 'Ошибки jetson_hardware на слэйве',
-        issueSlaveNoVideo: 'Нет видео потока на слэйве',
-        issueSlaveDeserializer: 'Ошибка десериалайзера на слэйве',
-        issueSlaveCamera: 'Проблема камеры на слэйве',
-        issueSlaveRadar: 'Ошибки радара',
-        issueSlaveSelects: 'Ошибки селектов на слэйве',
-        issueSlaveNote: '',
+        issueSecondaryDeviceUnavailable: 'SecondaryDevice Unavailable',
+        issueSecondaryDeviceJetH1: 'SecondaryDevice J1',
+        issueSecondaryDeviceNoVideo: 'SecondaryDevice No Video',
+        issueSecondaryDeviceD1: 'SecondaryDevice D1',
+        issueSecondaryDeviceCamera: 'SecondaryDevice Camera error',
+        issueSecondaryDeviceRadar: 'SecondaryDevice Radar error',
+        issueSecondaryDeviceS1: 'SecondaryDevice S1',
+        issueSecondaryDeviceNote: '',
         
-        issueNavUnavailable: 'БН недоступен',
-        issueNavCgn: 'Ошибки служб cgn',
-        issueNavNote: '',
+        issueNavigationBlockUnavailable: 'Navigation Block Unavailable',
+        issueNavigationBlockC1: 'NavigationBlock services error',
+        issueNavigationBlockNote: '',
         
         issueNote: '',
         
-        actionTramReboot: 'Перезагрузка трамвая',
-        actionRevpn: false,
+        actionVehicleReboot: 'Vehicle Reboot',
         
-        actionMasterReVPN: 'Ревпн',
-        actionMasterRestartDocker: 'Перезагрузка докера на мастере',
-        actionMasterRestartJetHard: 'Перезагрузка jetson hardware на мастере',
-        actionMasterReinstallCamDriver: 'Переуставновка драйвера камеры на мастере',
-        actionMasterReinstallBundle: 'Переуставновка бандла на мастере',
-        actionMasterReboot: 'Sudo reboot мастера',
-        actionMasterShutdownR: 'Shutdown -r now мастера',
-        actionMasterNote: '',
+        actionMainDeviceR1: 'MainDeviceR1',
+        actionMainDeviceRestartDocker: 'MainDevice Restart Docker',
+        actionMainDeviceRestartJ1: 'MainDevice Restart J1',
+        actionMainDeviceReinstallCamDriver: 'MainDevice Reinstall Cam Driver',
+        actionMainDeviceReinstallBundle: 'MainDevice Reinstall Bundle',
+        actionMainDeviceReboot: 'MainDevice Reboot',
+        actionMainDeviceShutdownR: 'MainDevice Shutdown now -R',
+        actionMainDeviceNote: '',
         
-        actionSlaveRestartDocker: 'Перезагрузка докера на слэйве',
-        actionSlaveRestartJetHard: 'Перезагрузка jetson hardware на слэйве',
-        actionSlaveReinstallCamDriver: 'Переуставновка драйвера камеры на слэйве',
-        actionSlaveReinstallBundle: false,
-        actionSlaveReboot: 'Sudo reboot слэйва',
-        actionSlaveShutdownR: 'Shutdown -r now слэйва',
-        actionSlaveNote: '',
+        actionSecondaryDeviceRestartDocker: 'SecondaryDevice Restart Docker',
+        actionSecondaryDeviceRestartJ1: 'SecondaryDevice Restart J1',
+        actionSecondaryDeviceReinstallCamDriver: 'SecondaryDevice Reinstall Cam Driver',
+        actionSecondaryDeviceReinstallBundle: 'SecondaryDevice Reinstall Bundle',
+        actionSecondaryDeviceReboot: 'SecondaryDevice Reboot',
+        actionSecondaryDeviceShutdownR: 'econdaryDevice Shutdown now -R',
+        actionSecondaryDeviceNote: '',
         
-        actionNavRestartCgn: 'Перезагрузка служб cgn* на БН',
-        actionNavReinstallBundle: 'Переуставновка бандла на БН',
-        actionNavReboot: 'Sudo reboot БН',
-        actionNavShutdownR: 'Shutdown -r now БН',
-        actionNavNote: '',
+        actionNavigationBlockRestartC1: 'NavigationBlock Restart C1',
+        actionNavigationBlockReinstallBundle: 'NavigationBlock Reinstall Bundle',
+        actionNavigationBlockReboot: 'NavigationBlock Reboot',
+        actionNavigationBlockShutdownR: '',
+        actionNavigationBlockNote: '',
         
         actionNote: '',
     }
@@ -74,7 +73,7 @@ const dataProcessing = (report: ReportEntryType) => {
     const processedData = [];
 
     const data: DataType = {
-        tramNumber: '',
+        vehicleNumber: '',
         id: '',
         time: date.toLocaleTimeString(),
         driversReport: '',
@@ -87,8 +86,8 @@ const dataProcessing = (report: ReportEntryType) => {
             continue;
         }     
         
-        if(key === 'tramNumber' && typeof(value) != "boolean") {
-            data.tramNumber = value;
+        if(key === 'vehicleNumber' && typeof(value) != "boolean") {
+            data.vehicleNumber = value;
         }
 
         if(key.includes(driversReport)) {
@@ -117,11 +116,8 @@ const dataProcessing = (report: ReportEntryType) => {
                 data.action = data.action + value + ', \n';
             }
         }
-        // console.log('data', data);
-        
     }
     processedData.push(data);
-    // console.log('processedData', processedData);
     return processedData;
 }
 

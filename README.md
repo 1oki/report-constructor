@@ -9,6 +9,7 @@ Vehicle Report Application is a web application designed to create and manage re
 - [Installation](#installation)
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
+- [Technologies](#Technologies)
 - [Contributing](#contributing)
 - [License](#license)
 

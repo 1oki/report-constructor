@@ -1,6 +1,6 @@
-# Vehicle Report Application
+# Vehicle Issues Report Application
 
-Vehicle Report Application is a web application designed to create and manage reports on vehicle conditions. Users can add data, view it in a table, edit, and save entries. The project utilizes React, TypeScript, and Zustand for state management, and it includes an export feature to save reports in .xlsx format.
+Vehicle Issues Report Application is a web application designed to create and manage reports on vehicle conditions. Users can add data, view it in a table, edit, and save entries. The project utilizes React, TypeScript, and Zustand for state management, and it includes an export feature to save reports in .xlsx format.
 
 ## Table of Contents
 

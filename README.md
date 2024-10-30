@@ -1,46 +1,92 @@
-# Getting Started with Create React App
+# Vehicle Report Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Vehicle Report Application is a web application designed to create and manage reports on vehicle conditions. Users can add data, view it in a table, edit, and save entries. The project utilizes React, TypeScript, and Zustand for state management, and it includes an export feature to save reports in .xlsx format.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Character Listing**: Fetches and displays a list of Star Wars characters.
+- **Search**: Search characters by name.
+- **Gender Filter**: Filter characters by gender.
+- **Favorites**: Mark characters as favorite and view them in a separate section.
+- **Pagination**: Navigate through large lists of characters using pagination.
+- **Responsive UI**: Mobile-friendly design using TailwindCSS.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+- **React** — Frontend JavaScript library
+- **Redux Toolkit** — State management
+- **TailwindCSS** — Utility-first CSS framework
+- **REST API** — Fetch data from external Star Wars API
+- **PostCSS** — CSS transformations
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+Follow these steps to get a local copy of the project up and running:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/username/vehicle-report-app.git
+    cd sw-characters
+    ```
+2. **Navigate to the project folder:**
+    ```bash
+    cd vehicle-report-app
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Start the development server**:
+    ```bash
+    npm start
+    ```
 
-### `npm run eject`
+5. **Open the app**:
+    Navigate to `http://localhost:3000` to view the application in the browser.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Adding a Report**: Use the form to add a new report. Fill out the necessary fields and click the Submit button. After submission, the data will be automatically saved and displayed in the table.
+2. **Resetting Fields**: After clicking Submit, all form fields and buttons reset to their initial state.
+3. **Editing a Report**: You can edit report data directly in the table. After making changes, the data will automatically update in the table.
+4. **Saving to localStorage**: Entered data is saved to localStorage and restored upon page reload.
+5. **Exporting to .xlsx**: The application includes an export feature that allows users to download all report data in an .xlsx file for external use or backup purposes.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Folder Structure
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Technologies
+React — Library for building user interfaces
+TypeScript — Typed superset of JavaScript
+Zustand — Library for state management
+xlsx — Library to generate .xlsx files
+CSS — Styling for the application interface
 
-## Learn More
+## Authors and Support
+Project author: Sergei Filippov
+For questions or suggestions, please open an issue on GitHub or contact us by email.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributing
+Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Fork the repository.
+Create a new branch (git checkout -b feature-branch).
+Make your changes.
+Commit your changes (git commit -m 'Add new feature').
+Push to the branch (git push origin feature-branch).
+Open a pull request.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+

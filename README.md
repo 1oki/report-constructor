@@ -36,12 +36,11 @@ Follow these steps to get a local copy of the project up and running:
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/username/vehicle-report-app.git
-    cd sw-characters
+    git clone https://github.com/username/report-constructor.git
     ```
 2. **Navigate to the project folder:**
     ```bash
-    cd vehicle-report-app
+    cd report-constructor
     ```
 
 3. **Install dependencies**:

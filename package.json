@@ -37,5 +37,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "report-constructor"
+  },
+  "author": "Sergei V. Filippov",
+  "license": "ISC"
 }

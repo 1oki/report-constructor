@@ -74,10 +74,6 @@ Zustand — Library for state management
 xlsx — Library to generate .xlsx files
 CSS — Styling for the application interface
 
-## Authors and Support
-Project author: Sergei Filippov
-For questions or suggestions, please open an issue on GitHub or contact us by email.
-
 ## Contributing
 Contributions are welcome! If you'd like to contribute to the project, please follow these steps:
 
